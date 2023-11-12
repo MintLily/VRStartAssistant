@@ -1,0 +1,8 @@
+VRStartAssistant/bin/
+VRStartAssistant/obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+Build/
+*.snk
