@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -8,9 +8,9 @@ public class VRChat {
 
     public static async Task Start() {
         Log.Information("Starting VRChat...");
-        Process.Start("steam://launch/438100");
-        Log.Information("Waiting 30 seconds for VRChat to fully start...");
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/438100");
+        Log.Information("Waiting 20 seconds for VRChat to fully start...");
+        await Task.Delay(TimeSpan.FromSeconds(20));
         
         Log.Information("Attempting to detect VRChat...");
         Processes.VrChatProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrchat");
@@ -20,5 +20,7 @@ public class VRChat {
         }
         Log.Information("VRChat detected. Minimizing VRChat...");
         WindowMinimizer.ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
+        
+        await Program.AudioSwitchInstance.Start();
     }
 }

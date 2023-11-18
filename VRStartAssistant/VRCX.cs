@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -17,12 +17,13 @@ public class VRCX {
         catch {/*ignore*/}
         
         Log.Information("Starting VRCX...");
-        Process.Start(new ProcessStartInfo {
-            WorkingDirectory = @"G:\VRCX\",
-            FileName = "VRCX.exe",
-            Arguments = "",
-            UseShellExecute = false,
-        });
+        // Process.Start(new ProcessStartInfo {
+        //     WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX"),
+        //     FileName = "VRCX.exe",
+        //     Arguments = "",
+        //     UseShellExecute = false,
+        // });
+        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX", "VRCX.exe"));
         Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
     }
     

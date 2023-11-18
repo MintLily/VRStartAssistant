@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -8,7 +8,7 @@ public class SteamVR {
 
     public static async Task StartAsync() {
         Log.Information("Starting SteamVR...");
-        Process.Start("steam://launch/250820");
+        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/250820");
 
         Log.Information("Waiting 10 seconds for SteamVR to fully start...");
         await Task.Delay(TimeSpan.FromSeconds(10));
