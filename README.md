@@ -106,7 +106,7 @@ Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/
 
 * Othneil Drew - for the [README Style](https://github.com/othneildrew/Best-README-Template)
 * Katie - For help with the Windows API (From [WindowsXSO][WindowsXSOUrl])
-* [Requi](https://github.com/RequiDev) - For Audio Switching (from [AudioDeviceWatcher](https://github.com/RequiDev/AudioDeviceWatcher))
+* [xenolightning ](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

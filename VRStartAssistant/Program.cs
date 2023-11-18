@@ -1,11 +1,11 @@
-using Serilog;
+﻿using Serilog;
 
 namespace VRStartAssistant;
 
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.0";
+    public const string AppVersion = "1.1";
 }
 
 public abstract class Program {
