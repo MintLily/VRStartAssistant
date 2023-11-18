@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -6,7 +6,7 @@ namespace VRStartAssistant;
 public class VRChat {
     public VRChat() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "VRChat", "Starts and Minimizes VRChat");
 
-    public static async Task Start() {
+    public async Task Start() {
         Log.Information("Starting VRChat...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/438100");
         Log.Information("Waiting 20 seconds for VRChat to fully start...");

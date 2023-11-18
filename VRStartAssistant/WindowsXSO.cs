@@ -14,7 +14,7 @@ public class WindowsXSO {
     private static readonly List<uint> KnownNotifications = new List<uint>();
     private static readonly List<string> TargetApplicationNames = new() { "discord", "vesktop" };
     
-    public static async Task StartAsync() {
+    public async Task StartAsync() {
         _listener = UserNotificationListener.Current;
         var accessStatus = _listener.RequestAccessAsync().GetResults();
 
@@ -55,7 +55,7 @@ public class WindowsXSO {
             
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) 
-                await SteamVR.ExitApplicationWithSteamVr();
+                await Program.SteamVrInstance.ExitApplicationWithSteamVr();
             
             IReadOnlyList<UserNotification> readOnlyListOfNotifications = _listener.GetNotificationsAsync(NotificationKinds.Toast).AsTask().Result;
             

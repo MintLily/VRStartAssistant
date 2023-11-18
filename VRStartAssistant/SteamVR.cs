@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -6,7 +6,7 @@ namespace VRStartAssistant;
 public class SteamVR {
     public SteamVR() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "SteamVR", "Starts SteamVR");
 
-    public static async Task StartAsync() {
+    public async Task StartAsync() {
         Log.Information("Starting SteamVR...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/250820");
 
@@ -25,11 +25,11 @@ public class SteamVR {
         }
 
         await Task.Delay(TimeSpan.FromSeconds(2));
-        await VRChat.Start();
+        await Program.VrChatInstance.Start();
     }
     
-    public static async Task ExitApplicationWithSteamVr() {
-        VRCX.AutoExitVrcxWithSteamVr();
+    public async Task ExitApplicationWithSteamVr() {
+        Program.VrcxInstance.AutoExitVrcxWithSteamVr();
         if (Processes.SteamVrProcess == null) return;
         Log.Information("SteamVR has exited. Exiting in 5 seconds...");
         await Task.Delay(TimeSpan.FromSeconds(5));

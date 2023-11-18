@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 
 namespace VRStartAssistant;
 
@@ -9,6 +9,11 @@ public static class Vars {
 }
 
 public abstract class Program {
+    public static AudioSwitch? AudioSwitchInstance;
+    public static VRChat? VrChatInstance;
+    public static VRCX? VrcxInstance;
+    public static SteamVR? SteamVrInstance;
+    private static WindowsXSO? _windowsXsoInstance;
 
     public static async Task Main(string[] args) {
         Log.Logger = new LoggerConfiguration()
@@ -17,11 +22,16 @@ public abstract class Program {
             .CreateLogger();
 
         Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion;
+        AudioSwitchInstance = new AudioSwitch();
+        var processes = new Processes();
+        VrcxInstance = new VRCX();
+        SteamVrInstance = new SteamVR();
+        VrChatInstance = new VRChat();
+        _windowsXsoInstance = new WindowsXSO();
         
-        VRCX.Start();                          // Start VRCX
-        await SteamVR.StartAsync();            // Start SteamVR & VRChat
-        var audioSwitcher = new AudioSwitch(); // Switch to VR USB Audio
-        await WindowsXSO.StartAsync();         // Start custom WindowsXSO
+        VrcxInstance.Start();                          // Start VRCX
+        await SteamVrInstance.StartAsync();            // Start SteamVR, Start VRChat, Switch Audio
         WindowMinimizer.ShowWindow(WindowMinimizer.GetConsoleWindow(), 0); // Hide this console window
+        await _windowsXsoInstance.StartAsync();
     }
 }
