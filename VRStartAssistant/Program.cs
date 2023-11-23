@@ -6,7 +6,7 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.2";
+    public const string AppVersion = "1.2.1";
 }
 
 public abstract class Program {
