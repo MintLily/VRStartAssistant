@@ -21,12 +21,12 @@ public class WindowsXSO {
         var isInRestartMessage = false;
         switch (accessStatus) {
             case UserNotificationListenerAccessStatus.Allowed:
-                Log.Information("Notifications {0}.", "access granted");
+                Log.Information("[{0}] Notifications {1}.", "WINDOWSXSO", "access granted");
                 break;
             case UserNotificationListenerAccessStatus.Denied:
-                Log.Error("Notifications {0}.", "access denied");
+                Log.Error("[{0}] Notifications {1}.", "WINDOWSXSO", "access denied");
                 isInRestartMessage = true;
-                Log.Warning("Please grant access to notifications.");
+                Log.Warning("[{0}] Please grant access to notifications.", "WINDOWSXSO");
                 Console.WriteLine("----------------------------------------");
                 Log.Warning("<[{0}]>", "Windows 11");
                 Log.Warning("(System) Settings > Privacy & Security > Notifications (Section) > Allow apps to access notifications > ON (true)");
@@ -39,8 +39,8 @@ public class WindowsXSO {
                 Console.ReadKey();
                 break;
             case UserNotificationListenerAccessStatus.Unspecified:
-                Log.Warning("Notifications {0}.", "access unspecified");
-                Log.Warning("Notifications may not work as intended.");
+                Log.Warning("[{0}] Notifications {1}.", "WINDOWSXSO", "access unspecified");
+                Log.Warning("[{0}] Notifications may not work as intended.", "WINDOWSXSO");
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -48,9 +48,9 @@ public class WindowsXSO {
         if (isInRestartMessage)
             Process.GetCurrentProcess().Kill();
 
-        Log.Information("Whitelist target applications: " + "{0}", string.Join(", ", TargetApplicationNames!));
+        Log.Information("[{0}] Whitelist target applications: " + "{1}", "WINDOWSXSO", string.Join(", ", TargetApplicationNames!));
 
-        Log.Information("Starting notification listener...");
+        Log.Information("[{0}] Starting notification listener...", "WINDOWSXSO");
         while (true) { // Keep the program running
             
             // Check if SteamVR is still running
@@ -125,9 +125,9 @@ public class WindowsXSO {
                     };
         
                     new XSNotifier().SendNotification(xsNotification);
-                    Log.Information("Notification sent from {0}: \"{1} - {2}\"", appName, title, text);
+                    Log.Information("[{0}] Notification sent from {1}: \"{2} - {3}\"", "WINDOWSXSO", appName, title, text);
 #if DEBUG
-                    Log.Debug("JSON: {0}\n", xsNotification.AsJson());
+                    Log.Debug("[{0}] JSON: {1}\n", "WINDOWSXSO", xsNotification.AsJson());
 #endif
                 }
                 catch (Exception e) {

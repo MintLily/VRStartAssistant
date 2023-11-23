@@ -10,13 +10,13 @@ public class VRCX {
         try {
             Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
             if (Processes.VrcxProcess != null) {
-                Log.Information("VRCX is {0}; not re-launching.", "already running");
+                Log.Information("[{0}] VRCX is {1}; not re-launching.", "VRCX", "already running");
                 return;
             }
         }
         catch {/*ignore*/}
         
-        Log.Information("Starting VRCX...");
+        Log.Information("[{0}] Starting VRCX...", "VRCX");
         // Process.Start(new ProcessStartInfo {
         //     WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX"),
         //     FileName = "VRCX.exe",
@@ -29,7 +29,7 @@ public class VRCX {
     
     public void AutoExitVrcxWithSteamVr() {
         if (Processes.VrcxProcess == null) return;
-        Log.Information("Closing VRCX...");
+        Log.Information("[{0}] Closing VRCX...", "VRCX");
         Processes.VrcxProcess.CloseMainWindow();
     }
 }

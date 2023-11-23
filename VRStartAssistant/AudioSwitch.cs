@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using AudioSwitcher.AudioApi.CoreAudio;
 
 namespace VRStartAssistant;
@@ -19,7 +19,7 @@ public class AudioSwitch {
             // }
             var device = await controller.GetDeviceAsync(Guid.Parse(_indexUsbAudioAdapterGuid));
             controller.DefaultPlaybackDevice = device;
-            Log.Information("Set audio device");
+            Log.Information("[{0}] Set audio device", "AUDIO");
         }
         catch (Exception e) {
             Log.Error(e, "Failed to set default audio device");
