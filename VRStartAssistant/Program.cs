@@ -1,11 +1,12 @@
-using Serilog;
+﻿using Serilog;
+using VRStartAssistant.Secret;
 
 namespace VRStartAssistant;
 
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.1";
+    public const string AppVersion = "1.2";
 }
 
 public abstract class Program {
@@ -15,6 +16,7 @@ public abstract class Program {
     public static SteamVR? SteamVrInstance;
     private static WindowsXSO? _windowsXsoInstance;
     public static VRCVideoCacher? VrcVideoCacherInstance;
+    public static SecretApp1? SecretApp1Instance;
 
     public static async Task Main(string[] args) {
         Log.Logger = new LoggerConfiguration()
@@ -30,6 +32,7 @@ public abstract class Program {
         VrChatInstance = new VRChat();
         _windowsXsoInstance = new WindowsXSO();
         VrcVideoCacherInstance = new VRCVideoCacher();
+        SecretApp1Instance = new SecretApp1();
         
         VrcxInstance.Start();                          // Start VRCX
         await SteamVrInstance.StartAsync();            // Start SteamVR, Start VRChat, Switch Audio
