@@ -9,6 +9,7 @@ public class Processes {
     public static Process? SteamVrProcess;
     public static Process? VrChatProcess;
     public static Process? VrcxProcess;
+    public static Process? VrcVideoCacher;
 
     //public static void StartFirst() => SteamVrProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrserver");
 }

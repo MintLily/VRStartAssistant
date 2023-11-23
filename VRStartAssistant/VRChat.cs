@@ -22,6 +22,6 @@ public class VRChat {
         Log.Information("[{0}] VRChat detected. Minimizing VRChat...", "VRCHAT");
         WindowMinimizer.ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
         
-        await Program.AudioSwitchInstance.Start();
+        await Program.VrcVideoCacherInstance.Start();
     }
 }

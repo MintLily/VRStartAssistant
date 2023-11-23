@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 
 namespace VRStartAssistant;
 
@@ -14,6 +14,7 @@ public abstract class Program {
     public static VRCX? VrcxInstance;
     public static SteamVR? SteamVrInstance;
     private static WindowsXSO? _windowsXsoInstance;
+    public static VRCVideoCacher? VrcVideoCacherInstance;
 
     public static async Task Main(string[] args) {
         Log.Logger = new LoggerConfiguration()
@@ -28,6 +29,7 @@ public abstract class Program {
         SteamVrInstance = new SteamVR();
         VrChatInstance = new VRChat();
         _windowsXsoInstance = new WindowsXSO();
+        VrcVideoCacherInstance = new VRCVideoCacher();
         
         VrcxInstance.Start();                          // Start VRCX
         await SteamVrInstance.StartAsync();            // Start SteamVR, Start VRChat, Switch Audio
