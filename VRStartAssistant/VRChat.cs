@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -25,5 +25,6 @@ public class VRChat {
         
         await Program.VrcVideoCacherInstance.Start();
         await Program.SecretApp1Instance.Start();
+        Program.AdGoByeInstance.Start();
     }
 }

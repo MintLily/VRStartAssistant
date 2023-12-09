@@ -30,7 +30,9 @@ public class SteamVR {
     
     public async Task ExitApplicationWithSteamVr() {
         Program.VrcxInstance.AutoExitVrcxWithSteamVr();
-        Program.VrcVideoCacherInstance.AutoCloseWithVRChatOrSteamVR();
+        if (!Program.VrcVideoCacherInstance.FailedToStart)
+            Program.VrcVideoCacherInstance.AutoCloseWithVRChatOrSteamVR();
+        Program.AdGoByeInstance.AutoCloseWithVRChatOrSteamVR();
         if (Processes.SteamVrProcess == null) return;
         Log.Information("[{0}] SteamVR has exited. Exiting in 5 seconds...", "STEAMVR");
         await Task.Delay(TimeSpan.FromSeconds(5));
