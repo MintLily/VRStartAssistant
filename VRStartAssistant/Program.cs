@@ -19,13 +19,21 @@ public abstract class Program {
     public static SecretApp1? SecretApp1Instance;
     public static AdGoBye? AdGoByeInstance;
 
+#if DEBUG
+    public static Task Main(string[] args) {
+#else
     public static async Task Main(string[] args) {
+#endif
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Console()
             .CreateLogger();
 
+#if DEBUG
+        Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + " - DEBUG";
+#else
         Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion;
+#endif
         AudioSwitchInstance = new AudioSwitch();
         // var processes = new Processes();
         VrcxInstance = new VRCX();
@@ -37,8 +45,15 @@ public abstract class Program {
         AdGoByeInstance = new AdGoBye();
         
         VrcxInstance.Start();                          // Start VRCX
+#if DEBUG
+        AudioSwitchInstance.Start().GetAwaiter().GetResult();
+        Log.Debug("Press any key to exit...");
+        Console.ReadLine();
+        return Task.CompletedTask;
+#else
         await SteamVrInstance.StartAsync();            // Start SteamVR, Start VRChat, Switch Audio
         WindowMinimizer.ShowWindow(WindowMinimizer.GetConsoleWindow(), 0); // Hide this console window
         await _windowsXsoInstance.StartAsync();
+#endif
     }
 }

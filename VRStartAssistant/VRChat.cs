@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -22,8 +22,14 @@ public class VRChat {
         }
         Log.Information("[{0}] VRChat detected. Minimizing VRChat...", "VRCHAT");
         WindowMinimizer.ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
-        
-        await Program.VrcVideoCacherInstance.Start();
+
+        try {
+            await Program.VrcVideoCacherInstance.Start();
+        }
+        catch (Exception ex) {
+            Log.Error(ex, "[{0}] {1}", "VRCHAT", "Failed to start VRCVideoCacher");
+            Program.VrcVideoCacherInstance.FailedToStart = true;
+        }
         await Program.SecretApp1Instance.Start();
         Program.AdGoByeInstance.Start();
     }
