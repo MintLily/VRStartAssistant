@@ -10,7 +10,7 @@ public class VRCX {
         try {
             Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
             if (Processes.VrcxProcess != null) {
-                Log.Information("[{0}] VRCX is {1}; not re-launching.", "VRCX", "already running");
+                Log.Information("[{0}] VRCX is {1} with process ID {2}; not re-launching.", "VRCX", "already running", Processes.VrcxProcess.Id);
                 return;
             }
         }
@@ -23,7 +23,7 @@ public class VRCX {
         //     Arguments = "",
         //     UseShellExecute = false,
         // });
-        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX", "VRCX.exe"));
+        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VRCX", "VRCX.exe"));
         Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
     }
     
