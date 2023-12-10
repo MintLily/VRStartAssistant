@@ -8,10 +8,11 @@ using VRStartAssistant.Configuration;
 namespace VRStartAssistant;
 
 public class AudioSwitch {
-    public AudioSwitch() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "AudioSwitcher", "Automatically switches to specific audio devices");
+    public AudioSwitch() => Logger.Information("Setting up module :: {Description}", "Automatically switches to specific audio devices");
+    private static readonly ILogger Logger = Log.ForContext(typeof(AudioSwitch));
 
     public async Task Start() {
-        Log.Information("[{0}] Attempting to set default audio device to {Device}...", "AUDIO", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
+        Logger.Information("Attempting to set default audio device to {Device}...", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
         try {
             var controller = new CoreAudioController();
 #if DEBUG
@@ -24,10 +25,10 @@ public class AudioSwitch {
 #endif
             var device = await controller.GetDeviceAsync(Guid.Parse(Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Guid));
             controller.DefaultPlaybackDevice = device;
-            Log.Information("[{0}] Set audio device to {1}", "AUDIO", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
+            Logger.Information("Set audio device to {0}", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
         }
         catch (Exception e) {
-            Log.Error(e, "Failed to set default audio device");
+            Logger.Error(e, "Failed to set default audio device");
         }
     }
 }

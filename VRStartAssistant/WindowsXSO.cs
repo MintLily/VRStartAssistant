@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
@@ -8,7 +8,8 @@ using XSNotifications.Enum;
 namespace VRStartAssistant; 
 
 public class WindowsXSO {
-    public WindowsXSO() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "WindowsXSO", "Windows to XSOverlay Notification Relay");
+    public WindowsXSO() => Logger.Information("Setting up module :: {Description}", "Windows to XSOverlay Notification Relay");
+    private static readonly ILogger Logger = Log.ForContext(typeof(WindowsXSO));
 
     private static UserNotificationListener? _listener;
     private static readonly List<uint> KnownNotifications = new List<uint>();
@@ -21,26 +22,26 @@ public class WindowsXSO {
         var isInRestartMessage = false;
         switch (accessStatus) {
             case UserNotificationListenerAccessStatus.Allowed:
-                Log.Information("[{0}] Notifications {1}.", "WINDOWSXSO", "access granted");
+                Logger.Information("Notifications {0}.", "access granted");
                 break;
             case UserNotificationListenerAccessStatus.Denied:
-                Log.Error("[{0}] Notifications {1}.", "WINDOWSXSO", "access denied");
+                Logger.Error("Notifications {0}.", "access denied");
                 isInRestartMessage = true;
-                Log.Warning("[{0}] Please grant access to notifications.", "WINDOWSXSO");
+                Logger.Warning("Please grant access to notifications.");
                 Console.WriteLine("----------------------------------------");
-                Log.Warning("<[{0}]>", "Windows 11");
-                Log.Warning("(System) Settings > Privacy & Security > Notifications (Section) > Allow apps to access notifications > ON (true)");
-                Log.Warning("<[{0}]>", "Windows 10");
-                Log.Warning("(System) Settings > Notifications & actions > Get notifications from apps and other senders > ON (true)");
-                Log.Warning("<[{0}]>", "BOTH");
-                Log.Warning("Make sure Focus Assist is OFF (false)");
-                Log.Warning("Once complete, restart this program.");
-                Log.Warning($"Press any key to exit {Vars.AppName}.");
+                Logger.Warning("<[{0}]>", "Windows 11");
+                Logger.Warning("(System) Settings > Privacy & Security > Notifications (Section) > Allow apps to access notifications > ON (true)");
+                Logger.Warning("<[{0}]>", "Windows 10");
+                Logger.Warning("(System) Settings > Notifications & actions > Get notifications from apps and other senders > ON (true)");
+                Logger.Warning("<[{0}]>", "BOTH");
+                Logger.Warning("Make sure Focus Assist is OFF (false)");
+                Logger.Warning("Once complete, restart this program.");
+                Logger.Warning($"Press any key to exit {Vars.AppName}.");
                 Console.ReadKey();
                 break;
             case UserNotificationListenerAccessStatus.Unspecified:
-                Log.Warning("[{0}] Notifications {1}.", "WINDOWSXSO", "access unspecified");
-                Log.Warning("[{0}] Notifications may not work as intended.", "WINDOWSXSO");
+                Logger.Warning("Notifications {0}.", "access unspecified");
+                Logger.Warning("Notifications may not work as intended.");
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -125,13 +126,13 @@ public class WindowsXSO {
                     };
         
                     new XSNotifier().SendNotification(xsNotification);
-                    Log.Information("[{0}] Notification sent from {1}: \"{2} - {3}\"", "WINDOWSXSO", appName, title, text);
+                    Logger.Information("Notification sent from {0}: \"{1} - {2}\"", appName, title, text);
 #if DEBUG
-                    Log.Debug("[{0}] JSON: {1}\n", "WINDOWSXSO", xsNotification.AsJson());
+                    Logger.Debug("JSON: {0}\n", xsNotification.AsJson());
 #endif
                 }
                 catch (Exception e) {
-                    Log.Error(e, "Error sending notification.");
+                    Logger.Error(e, "Error sending notification.");
                 }
             }
             await Task.Delay(TimeSpan.FromSeconds(1));

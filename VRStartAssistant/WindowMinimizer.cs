@@ -4,15 +4,38 @@ using Serilog;
 namespace VRStartAssistant; 
 
 public class WindowMinimizer {
-    public WindowMinimizer() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "Window Minimizer", "Functions to minimize windows");
+    public WindowMinimizer() => Logger.Information("Setting up module :: {Description}", "Functions to minimize windows");
+    
+    private static readonly ILogger Logger = Log.ForContext(typeof(WindowMinimizer));
     
     // [DllImport("user32.dll", EntryPoint = "FindWindow")]
     // private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
     
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     
     [DllImport("kernel32.dll")]
-    public static extern IntPtr GetConsoleWindow();
+    private static extern IntPtr GetConsoleWindow();
+    
+    public async Task DelayedMinimize() {
+        await Task.Delay(TimeSpan.FromSeconds(30));
+        
+        ShowWindow(GetConsoleWindow(), 0); // Hide this console window
+
+        if (Processes.VrChatProcess is not null) {
+            Logger.Information("Minimizing VRChat...");
+            ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
+        }
+        
+        if (Processes.VrcVideoCacher is not null) {
+            Logger.Information("Minimizing VRCVideoCacher...");
+            ShowWindow(Processes.VrcVideoCacher.MainWindowHandle, 6);
+        }
+
+        if (Processes.AdGoBye is not null) {
+            Logger.Information("Minimizing AdGoBye...");
+            ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
+        }
+    }
 }

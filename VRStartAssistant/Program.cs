@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using VRStartAssistant.Secret;
 
 namespace VRStartAssistant;
@@ -24,11 +24,19 @@ public abstract class Program {
 #else
     public static async Task Main(string[] args) {
 #endif
+        var levelSwitch = new LoggingLevelSwitch {
+#if DEBUG
+            MinimumLevel = LogEventLevel.Debug
+#else
+            MinimumLevel = LogEventLevel.Information
+#endif
+        };
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console()
+            .MinimumLevel.ControlledBy(levelSwitch)
+            .WriteTo.Console(new ExpressionTemplate(
+                template: "[{@t:HH:mm:ss} {@l:u3} {Coalesce(Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1),'<none>')}] {@m}\n{@x}",
+                theme: TemplateTheme.Literate))
             .CreateLogger();
-
 #if DEBUG
         Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + " - DEBUG";
 #else
