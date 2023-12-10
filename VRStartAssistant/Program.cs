@@ -7,6 +7,7 @@ public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
     public const string AppVersion = "1.3";
+    public const int TargetConfigVersion = 2;
 }
 
 public abstract class Program {

@@ -6,9 +6,27 @@ namespace VRStartAssistant.Configuration;
 
 public static class Config {
     public static Base Base { get; set; } = Load();
+    private static readonly ILogger Logger = Log.ForContext(typeof(Config));
 
     private static void Start() {
-        if (File.Exists(Path.Combine(Environment.CurrentDirectory, "VRStartAssistant.config.json"))) return;
+        var update = false;
+        if (File.Exists("VRStartAssistant.config.json")) {
+            if (Base.ConfigVersion == Vars.TargetConfigVersion) return;
+            // else continue to update config
+            update = true;
+        }
+        
+        var wxso = new WinXSO {
+            Settings = new() {
+                Applications = new() {
+                    "discord",
+                    "discordptb",
+                    "discordcanary",
+                    "vesktop"
+                },
+                Whitelist = true
+            }
+        };
         
         var audioDevices = new List<AudioDevices> {
             new() {
@@ -34,20 +52,20 @@ public static class Config {
         };
         
         var config = new Base {
-            ConfigVersion = 1,
-            Audio = audio
+            ConfigVersion = 2,
+            Audio = audio,
+            WinXSO = wxso
         };
 
-        var path = Path.Combine(Environment.CurrentDirectory, "VRStartAssistant.config.json");
         var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, json);
-        Log.Information("[{0}] Config file created in {1}.", "CONFIG", path);
+        File.WriteAllText("VRStartAssistant.config.json", json);
+        Logger.Information($"Config file {(update ? "updated" : "created")} in " + "{0}.", Vars.BaseDir);
     }
     
     private static Base Load() {
         Start();
-        return JsonSerializer.Deserialize<Base>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "VRStartAssistant.config.json"))) ?? throw new Exception();
+        return JsonSerializer.Deserialize<Base>(File.ReadAllText("VRStartAssistant.config.json")) ?? throw new Exception();
     }
     
-    public static void Save() => File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "VRStartAssistant.config.json"), JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
+    public static void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
 }

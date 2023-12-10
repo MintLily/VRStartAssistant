@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
+using VRStartAssistant.Configuration;
 using XSNotifications;
 using XSNotifications.Enum;
 
@@ -12,8 +13,8 @@ public class WindowsXSO {
     private static readonly ILogger Logger = Log.ForContext(typeof(WindowsXSO));
 
     private static UserNotificationListener? _listener;
-    private static readonly List<uint> KnownNotifications = new List<uint>();
-    private static readonly List<string> TargetApplicationNames = new() { "discord", "vesktop" };
+    private static readonly List<uint> KnownNotifications = [];
+    private static readonly List<string> TargetApplicationNames = Config.Base.WinXSO.Settings.Applications.ToList();
     
     public async Task StartAsync() {
         _listener = UserNotificationListener.Current;
@@ -48,10 +49,12 @@ public class WindowsXSO {
 
         if (isInRestartMessage)
             Process.GetCurrentProcess().Kill();
-
-        Log.Information("[{0}] Whitelist target applications: " + "{1}", "WINDOWSXSO", string.Join(", ", TargetApplicationNames!));
-
-        Log.Information("[{0}] Starting notification listener...", "WINDOWSXSO");
+        
+        var config = Config.Base!.WinXSO.Settings;
+        // Logger.Information("Whitelist target applications: {0}", string.Join(", ", TargetApplicationNames!));
+        
+        Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
+        Logger.Information($"{(config.Whitelist ? "Allowing" : "Blocking")} target applications: " + "{0}", string.Join(", ", config.Applications!));
         while (true) { // Keep the program running
             
             // Check if SteamVR is still running
@@ -73,6 +76,12 @@ public class WindowsXSO {
                     var elementList = textElements?.Select(t => t.Text).ToArray();
                     if (elementList == null) continue;
                     var title = elementList?[0];
+                    
+                    switch (config.Whitelist) {
+                        case true when !config.Applications!.Contains(appName!.ToLower()):
+                        case false when config.Applications!.Contains(appName!.ToLower()):
+                            continue;
+                    }
                     
                     if (!TargetApplicationNames.Contains(appName!.ToLower())) return;
 
