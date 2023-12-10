@@ -14,6 +14,10 @@
 
 <br />
 <div align="center">
+  <a href="https://github.com/Minty-Labs/WindowsXSO">
+    <img src="Resources/banner.png" alt="Banner Logo" height="80">
+  </a>
+
   <h3 align="center">VRStartAssistant</h3>
 
   <p align="center">

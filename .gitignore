@@ -7,3 +7,4 @@ riderModule.iml
 Build/
 *.snk
 VRStartAssistant/Secret/
+Resources/*.psd

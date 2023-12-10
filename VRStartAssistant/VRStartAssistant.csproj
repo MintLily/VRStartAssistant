@@ -9,7 +9,7 @@
         <AssemblyVersion>1.5.0.0</AssemblyVersion>
         <FileVersion>1.5.0.0</FileVersion>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>VOSA_798nt23rx867tb32r7t98n321rxey7tn98m213ex321odi9n7tx.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>VRSA_798nt23rx867tb32r7t98n321rxey7tn98m213ex321odi9n7tx.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
         <Title>VRStartAssistant</Title>
         <Authors>MintLily</Authors>
@@ -19,6 +19,7 @@
         <Version>1.5</Version>
         <PackageProjectUrl>https://github.com/MintLily/VRStartAssistant</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/MintLily/VRStartAssistant/main/LICENSE</PackageLicenseUrl>
+        <ApplicationIcon>..\Resources\icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,6 +29,12 @@
       <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
       <PackageReference Include="XSNotifications" Version="0.1.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Resources\icon.ico">
+        <Link>icon.ico</Link>
+      </None>
     </ItemGroup>
 
 </Project>
