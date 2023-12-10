@@ -1,22 +1,23 @@
 ﻿using System.Diagnostics;
 using Serilog;
 
-namespace VRStartAssistant; 
+namespace VRStartAssistant.Apps; 
 
 public class VRCX {
-    public VRCX() => Log.Information("[{0}] Setting up {Name} :: {Description}", "MODULE", "VRCX", "Starts VRCX");
+    public VRCX() => Logger.Information("Setting up module :: {Description}", "Starts VRCX");
+    private static readonly ILogger Logger = Log.ForContext(typeof(VRCX));
 
     public void Start() {
         try {
             Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
             if (Processes.VrcxProcess != null) {
-                Log.Information("[{0}] VRCX is {1} with process ID {2}; not re-launching.", "VRCX", "already running", Processes.VrcxProcess.Id);
+                Logger.Information("VRCX is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcxProcess.Id);
                 return;
             }
         }
         catch {/*ignore*/}
         
-        Log.Information("[{0}] Starting VRCX...", "VRCX");
+        Logger.Information("Starting VRCX...");
         // Process.Start(new ProcessStartInfo {
         //     WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX"),
         //     FileName = "VRCX.exe",
@@ -27,9 +28,10 @@ public class VRCX {
         Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
     }
     
-    public void AutoExitVrcxWithSteamVr() {
+    public void Exit() {
         if (Processes.VrcxProcess == null) return;
-        Log.Information("[{0}] Closing VRCX...", "VRCX");
+        Logger.Information("Closing VRCX...");
         Processes.VrcxProcess.CloseMainWindow();
+        Processes.VrcxProcess.Kill();
     }
 }
