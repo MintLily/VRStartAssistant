@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
@@ -58,8 +58,15 @@ public class WindowsXSO {
         while (true) { // Keep the program running
             
             // Check if SteamVR is still running
-            if (Processes.SteamVrProcess is { HasExited: true }) 
-                await Program.SteamVrInstance.ExitApplicationWithSteamVr();
+            if (Processes.SteamVrProcess is { HasExited: true }) {
+                await Program.SteamVrInstance!.Exit();
+                Program.VrcxInstance!.Exit();
+            }
+            
+            if (Processes.VrChatProcess is { HasExited: true }) {
+                Program.VrcVideoCacherInstance!.Exit();
+                Program.AdGoByeInstance!.Exit();
+            }
             
             IReadOnlyList<UserNotification> readOnlyListOfNotifications = _listener.GetNotificationsAsync(NotificationKinds.Toast).AsTask().Result;
             
