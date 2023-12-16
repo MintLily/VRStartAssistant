@@ -5,18 +5,20 @@ using VRStartAssistant.Apps;
 using VRStartAssistant.Secret;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
+using VRStartAssistant.Configuration;
 
 namespace VRStartAssistant;
 
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.5";
+    public const string AppVersion = "1.5.2";
     public const int TargetConfigVersion = 2;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 }
 
 public abstract class Program {
+    public static Config? ConfigurationInstance;
     public static AudioSwitch? AudioSwitchInstance;
     private static WindowsXSO? _windowsXsoInstance;
     private static WindowMinimizer? _windowMinimizerInstance;
@@ -51,6 +53,8 @@ public abstract class Program {
 #else
         Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion;
 #endif
+        ConfigurationInstance = new Config();
+        ConfigurationInstance.Load();
         AudioSwitchInstance = new AudioSwitch();
         _windowsXsoInstance = new WindowsXSO();
         _windowMinimizerInstance = new WindowMinimizer();

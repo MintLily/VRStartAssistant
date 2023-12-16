@@ -12,7 +12,7 @@ public class AudioSwitch {
     private static readonly ILogger Logger = Log.ForContext(typeof(AudioSwitch));
 
     public async Task Start() {
-        Logger.Information("Attempting to set default audio device to {Device}...", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
+        Logger.Information("Attempting to set default audio device to {Device}...", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Name);
         try {
             var controller = new CoreAudioController();
 #if DEBUG
@@ -23,9 +23,9 @@ public class AudioSwitch {
             Log.Information("[{0}] Is Debug Build ... Not changing audio device", "AUDIO");
             return;
 #endif
-            var device = await controller.GetDeviceAsync(Guid.Parse(Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Guid));
+            var device = await controller.GetDeviceAsync(Guid.Parse(Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Guid));
             controller.DefaultPlaybackDevice = device;
-            Logger.Information("Set audio device to {0}", Config.Base.Audio.AudioDevices[Config.Base.Audio.DefaultAudioDevice].Name);
+            Logger.Information("Set audio device to {0}", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Name);
         }
         catch (Exception e) {
             Logger.Error(e, "Failed to set default audio device");

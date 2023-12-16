@@ -14,7 +14,7 @@ public class WindowsXSO {
 
     private static UserNotificationListener? _listener;
     private static readonly List<uint> KnownNotifications = [];
-    private static readonly List<string> TargetApplicationNames = Config.Base.WinXSO.Settings.Applications.ToList();
+    private static readonly List<string> TargetApplicationNames = Program.ConfigurationInstance.Base.WinXSO.Settings.Applications.ToList();
     
     public async Task StartAsync() {
         _listener = UserNotificationListener.Current;
@@ -50,7 +50,7 @@ public class WindowsXSO {
         if (isInRestartMessage)
             Process.GetCurrentProcess().Kill();
         
-        var config = Config.Base!.WinXSO.Settings;
+        var config = Program.ConfigurationInstance.Base!.WinXSO.Settings;
         // Logger.Information("Whitelist target applications: {0}", string.Join(", ", TargetApplicationNames!));
         
         Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
