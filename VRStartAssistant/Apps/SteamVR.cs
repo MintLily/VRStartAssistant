@@ -40,7 +40,7 @@ public class SteamVR {
         await Program.VrChatInstance.Start();
     }
     
-    public async Task Exit() {
+    public static async Task Exit() {
         if (Processes.SteamVrProcess == null) return;
         Logger.Information("SteamVR has exited. Exiting in 5 seconds...");
         await Task.Delay(TimeSpan.FromSeconds(5));

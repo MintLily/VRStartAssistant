@@ -7,7 +7,7 @@ public class VRCX {
     public VRCX() => Logger.Information("Setting up module :: {Description}", "Starts VRCX");
     private static readonly ILogger Logger = Log.ForContext(typeof(VRCX));
 
-    public void Start() {
+    public static void Start() {
         try {
             Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
             if (Processes.VrcxProcess != null) {

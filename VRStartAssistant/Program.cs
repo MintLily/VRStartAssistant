@@ -25,9 +25,9 @@ public abstract class Program {
     
     public static VRChat? VrChatInstance;
     public static VRCX? VrcxInstance;
-    public static SteamVR? SteamVrInstance;
+    private static SteamVR? _steamVrInstance;
     public static VRCVideoCacher? VrcVideoCacherInstance;
-    public static SecretApp1? SecretApp1Instance;
+    private static SecretApp1? _secretApp1Instance;
     public static AdGoBye? AdGoByeInstance;
     public static BetterIndexFinger? BetterIndexFingerInstance;
 
@@ -62,21 +62,21 @@ public abstract class Program {
         
         // var processes = new Processes();
         VrcxInstance = new VRCX();
-        SteamVrInstance = new SteamVR();
+        _steamVrInstance = new SteamVR();
         VrChatInstance = new VRChat();
         VrcVideoCacherInstance = new VRCVideoCacher();
-        SecretApp1Instance = new SecretApp1();
+        _secretApp1Instance = new SecretApp1();
         AdGoByeInstance = new AdGoBye();
         BetterIndexFingerInstance = new BetterIndexFinger();
         
-        VrcxInstance.Start();                             // Start VRCX
+        VRCX.Start();                                     // Start VRCX
 #if DEBUG
         AudioSwitchInstance.Start().GetAwaiter().GetResult();
         Log.Debug("Press any key to exit...");
         Console.ReadLine();
         return Task.CompletedTask;
 #else
-        await SteamVrInstance.StartAsync();               // Start SteamVR, Start VRChat, Switch Audio
+        await _steamVrInstance.StartAsync();               // Start SteamVR, Start VRChat, Switch Audio
         await _windowMinimizerInstance.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
         await _windowsXsoInstance.StartAsync();           // Start XSO
 #endif

@@ -1,5 +1,6 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Serilog;
+using VRStartAssistant.Secret;
 
 namespace VRStartAssistant.Apps; 
 
@@ -24,13 +25,13 @@ public class VRChat {
         }
 
         try {
-            await Program.VrcVideoCacherInstance.Start();
+            await VRCVideoCacher.Start();
         }
         catch (Exception ex) {
             Logger.Error(ex, "Failed to start VRCVideoCacher");
             Program.VrcVideoCacherInstance.FailedToStart = true;
         }
-        await Program.SecretApp1Instance.Start();
+        SecretApp1.Start();
         BetterIndexFinger.Start();
     }
 }

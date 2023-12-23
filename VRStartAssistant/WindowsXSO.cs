@@ -2,6 +2,7 @@
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
+using VRStartAssistant.Apps;
 using VRStartAssistant.Configuration;
 using XSNotifications;
 using XSNotifications.Enum;
@@ -59,7 +60,7 @@ public class WindowsXSO {
             
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) {
-                await Program.SteamVrInstance!.Exit();
+                await SteamVR.Exit();
                 Program.VrcxInstance!.Exit();
             }
             

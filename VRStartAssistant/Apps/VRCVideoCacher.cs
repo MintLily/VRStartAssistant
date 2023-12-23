@@ -8,7 +8,7 @@ public class VRCVideoCacher {
     private static readonly ILogger Logger = Log.ForContext(typeof(VRCVideoCacher));
     public bool FailedToStart;
 
-    public async Task Start() {
+    public static async Task Start() {
         try {
             Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcvideocacher");
             if (Processes.VrcVideoCacher != null) {
