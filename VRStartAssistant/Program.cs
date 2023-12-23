@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -29,6 +29,7 @@ public abstract class Program {
     public static VRCVideoCacher? VrcVideoCacherInstance;
     public static SecretApp1? SecretApp1Instance;
     public static AdGoBye? AdGoByeInstance;
+    public static BetterIndexFinger? BetterIndexFingerInstance;
 
 #if DEBUG
     public static Task Main(string[] args) {
@@ -66,6 +67,7 @@ public abstract class Program {
         VrcVideoCacherInstance = new VRCVideoCacher();
         SecretApp1Instance = new SecretApp1();
         AdGoByeInstance = new AdGoBye();
+        BetterIndexFingerInstance = new BetterIndexFinger();
         
         VrcxInstance.Start();                             // Start VRCX
 #if DEBUG

@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -36,6 +36,11 @@ public class WindowMinimizer {
         if (Processes.AdGoBye is not null) {
             Logger.Information("Minimizing AdGoBye...");
             ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
+        }
+        
+        if (Program.ConfigurationInstance.Base.RunBetterIndexFinger && Processes.BetterIndexFinger is not null) {
+            Logger.Information("Minimizing BetterIndexFinger...");
+            ShowWindow(Processes.BetterIndexFinger.MainWindowHandle, 6);
         }
     }
 }

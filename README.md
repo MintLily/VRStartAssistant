@@ -51,7 +51,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [VRChat](https://hello.vrchat.com/), and (a custom version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
+An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [VRChat](https://hello.vrchat.com/), [Better Index Finger](https://taka3t.booth.pm/items/5240000), and (a custom version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
