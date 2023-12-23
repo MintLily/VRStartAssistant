@@ -22,6 +22,7 @@ public abstract class Program {
     public static AudioSwitch? AudioSwitchInstance;
     private static WindowsXSO? _windowsXsoInstance;
     private static WindowMinimizer? _windowMinimizerInstance;
+    private static Processes? _processesInstance;
     
     public static VRChat? VrChatInstance;
     public static VRCX? VrcxInstance;
@@ -59,6 +60,7 @@ public abstract class Program {
         AudioSwitchInstance = new AudioSwitch();
         _windowsXsoInstance = new WindowsXSO();
         _windowMinimizerInstance = new WindowMinimizer();
+        _processesInstance = new Processes();
         
         // var processes = new Processes();
         VrcxInstance = new VRCX();
@@ -77,6 +79,7 @@ public abstract class Program {
         return Task.CompletedTask;
 #else
         await _steamVrInstance.StartAsync();               // Start SteamVR, Start VRChat, Switch Audio
+        await _processesInstance.GetOtherProcesses();     // Get Other Processes
         await _windowMinimizerInstance.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
         await _windowsXsoInstance.StartAsync();           // Start XSO
 #endif
