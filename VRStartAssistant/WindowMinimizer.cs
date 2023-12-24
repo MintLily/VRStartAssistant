@@ -42,5 +42,10 @@ public class WindowMinimizer {
             Logger.Information("Minimizing BetterIndexFinger...");
             ShowWindow(Processes.BetterIndexFinger.MainWindowHandle, 6);
         }
+        
+        if (Processes.Oyasumi is not null) {
+            Logger.Information("Minimizing Oyasumi...");
+            ShowWindow(Processes.Oyasumi.MainWindowHandle, 6);
+        }
     }
 }
