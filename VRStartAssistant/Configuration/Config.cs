@@ -46,6 +46,7 @@ public class Config {
                     Whitelist = true
                 }
             },
+            RunSecretApp1 = true,
             RunBetterIndexFinger = false
         };
         
