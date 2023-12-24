@@ -56,6 +56,7 @@ public class WindowsXSO {
         
         Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
         Logger.Information($"{(config.Whitelist ? "Allowing" : "Blocking")} target applications: " + "{0}", string.Join(", ", config.Applications!));
+        Program.ChangeConsoleTitle();
         while (true) { // Keep the program running
             
             // Check if SteamVR is still running
@@ -122,8 +123,8 @@ public class WindowsXSO {
                         truncateText = true;
                     }
 
-                    if (text.ToLower().Contains("image.png") || text.ToLower().Contains("image.jpg") || text.ToLower().Contains("image.jpeg") || text.ToLower().Contains("unknown.png")) {
-                        text = "Sent an image.";
+                    if (text.ToLower().ContainsMultiple(".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".svg")) {
+                        text = $"[image: {text}]";
                         height = 100f;
                         timeout = 3f;
                     }
