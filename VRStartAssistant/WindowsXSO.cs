@@ -16,6 +16,7 @@ public class WindowsXSO {
     private static UserNotificationListener? _listener;
     private static readonly List<uint> KnownNotifications = [];
     private static readonly List<string> TargetApplicationNames = Program.ConfigurationInstance.Base.WinXSO.Settings.Applications.ToList();
+    private static readonly XSNotifier XsNotifier = new();
     
     public async Task StartAsync() {
         _listener = UserNotificationListener.Current;
@@ -98,52 +99,31 @@ public class WindowsXSO {
                     
                     if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(text)) continue;
                     
-                    var height = 175f;
-                    var timeout = 6f;
-                    
-                    if (text.Length > 150) {
-                        height += 25f;
-                        timeout = 7f;
-                    }
-
-                    if (text.Length > 275) {
-                        height += 75f;
-                        timeout = 8f;
-                    }
-
-                    if (text.Length > 400) {
-                        height += 155f;
-                        timeout = 10f;
-                    }
-
-                    var truncateText = false;
-                    if (text.Length > 500) {
-                        height += 200f;
-                        timeout = 12f;
-                        truncateText = true;
-                    }
+                    var height = CalculateHeight(text);
+                    var timeout = CalculateTimeout(text);
+                    var truncateText = height > 250f;
 
                     if (text.ToLower().ContainsMultiple(".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".svg")) {
                         text = $"[image: {text}]";
-                        height = 100f;
-                        timeout = 3f;
+                    } else if (text.Length == 0) {
+                        text = "[sent an embed of some sort]";
                     }
                     
                     var xsNotification = new XSNotification {
-                        Title = $"{appName} - {title}", // supports Rich Text Formatting
-                        Content = truncateText ? text[..1500] : text, // supports Rich Text Formatting
-                        Timeout = timeout, // [float] seconds
-                        SourceApp = Vars.AppName,
-                        MessageType = XSMessageType.Notification,
-                        UseBase64Icon = false,
-                        // Base64 encoded image
-                        Icon = "default", // Can also be "default", "error", or "warning"
-                        Opacity = 0.8f, // [float] 0 to 1
-                        Height = height,
-                        Volume = 0f, // [float] 0 to 1
+                        Title = $"{appName} - {title}",               // supports Rich Text Formatting
+                        Content = truncateText ? text[..1200] : text, // supports Rich Text Formatting
+                        Timeout = timeout,                            // [float] seconds
+                        SourceApp = Vars.AppName,                     // [string] name of your app
+                        MessageType = XSMessageType.Notification,     // Notification or MediaPlayer
+                        UseBase64Icon = false,                        // Base64 encoded image
+                        Icon = "default",                             // Can also be "default", "error", or "warning"
+                        Opacity = 0.8f,                               // [float] 0 to 1
+                        Height = height,                              // [float] 0 to 250
+                        Volume = 0.2f,                                // [float] 0 to 1
+                        AudioPath = "default"                         // Can also be "default", "error", or "warning"
                     };
         
-                    new XSNotifier().SendNotification(xsNotification);
+                    XsNotifier.SendNotification(xsNotification);
                     Logger.Information("Notification sent from {0}: \"{1} - {2}\"", appName, title, text);
 #if DEBUG
                     Logger.Debug("JSON: {0}\n", xsNotification.AsJson());
@@ -157,4 +137,20 @@ public class WindowsXSO {
         }
         // ReSharper disable once FunctionNeverReturns
     }
+    
+    private static int CalculateHeight(string content) =>
+        content.Length switch {
+            <= 100 => 100,
+            <= 200 => 150,
+            <= 300 => 200,
+            _ => 250
+        };
+    
+    private static float CalculateTimeout(string content) =>
+        content.Length switch {
+            <= 100 => 3f,
+            <= 200 => 4f,
+            <= 300 => 5f,
+            _ => 6f
+        };
 }
