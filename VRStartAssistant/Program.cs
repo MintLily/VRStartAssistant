@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -12,7 +12,7 @@ public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
     public const string AppVersion = "1.6.1";
-    public const int TargetConfigVersion = 3;
+    public const int TargetConfigVersion = 4;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 }
 
@@ -64,12 +64,13 @@ public abstract class Program {
         VrcVideoCacherInstance = new VRCVideoCacher();
         AdGoByeInstance = new AdGoBye();
         
+        await Integrations.HASS.ToggleBaseStations();     // Turns on Base Stations
         VRCX.Start();                                     // Start VRCX
 #if DEBUG
         AudioSwitchInstance.Start().GetAwaiter().GetResult();
         Log.Debug("Press any key to exit...");
         Console.ReadLine();
-        return Task.CompletedTask;
+        await Integrations.HASS.ToggleBaseStations(true);
 #else
         await _steamVrInstance.StartAsync();               // Start SteamVR, Start VRChat, Switch Audio
         await _processesInstance.GetOtherProcesses();     // Get Other Processes

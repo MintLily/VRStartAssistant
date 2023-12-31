@@ -12,7 +12,7 @@ public class Config {
         var hasFile = File.Exists("VRStartAssistant.config.json");
         
         var defaultConfig = new Base {
-            ConfigVersion = 3,
+            ConfigVersion = Vars.TargetConfigVersion,
             Audio = new Audio {
                 DefaultAudioDevice = 0,
                 AudioDevices = [
@@ -46,7 +46,16 @@ public class Config {
                     Whitelist = true
                 }
             },
+            HASS = new HASS {
+                Host = "",
+                Token = "",
+                BaseStationEntityId_1 = "",
+                BaseStationEntityId_2 = "",
+                BaseStationEntityId_3 = ""
+            },
             RunSecretApp1 = true,
+            RunVrcVideoCacher = false,
+            RunAdGoBye = false,
             RunBetterIndexFinger = false
         };
         

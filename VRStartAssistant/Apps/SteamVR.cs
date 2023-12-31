@@ -44,6 +44,7 @@ public class SteamVR {
         if (Processes.SteamVrProcess == null) return;
         Logger.Information("SteamVR has exited. Exiting in 5 seconds...");
         await Task.Delay(TimeSpan.FromSeconds(5));
+        await Integrations.HASS.ToggleBaseStations(true);
         Process.GetCurrentProcess().Kill();
         Environment.Exit(0);
     }
