@@ -80,7 +80,7 @@ Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/
 * Othneil Drew - for the [README Style](https://github.com/othneildrew/Best-README-Template)
 * Katie - For help with the Windows API (From [WindowsXSO][WindowsXSOUrl])
 * [xenolightning](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
-* [Home Assistant](https://www.home-assistant.io/) - For their [RestAPI](https://developers.home-assistant.io/docs/api/rest/) docs
+* [Home Assistant](https://www.home-assistant.io/) & HA Community - For their [RestAPI](https://developers.home-assistant.io/docs/api/rest/) docs
 * * [Elly](https://github.com/Ellyvr) ([GitLab](https://git.ellyvr.dev/Elly)) - For sanity checking my first time use of websocket/api things in C# using [RestSharp](https://restsharp.dev/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
