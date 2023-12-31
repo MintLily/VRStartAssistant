@@ -33,5 +33,7 @@ public class VRCX {
         Logger.Information("Closing VRCX...");
         Processes.VrcxProcess.CloseMainWindow();
         Processes.VrcxProcess.Kill();
+        // double make sure it gets killed
+        Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcx")?.Kill();
     }
 }
