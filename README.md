@@ -51,20 +51,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [VRChat](https://hello.vrchat.com/), [Better Index Finger](https://taka3t.booth.pm/items/5240000), and (a custom version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [VRChat](https://hello.vrchat.com/), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [Better Index Finger](https://taka3t.booth.pm/items/5240000), and (a custom/beta version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
+<br>
+It also automatically turns on some smart plugs used for Base Stations, and turns them off upon SteamVR exit.
 
 ### Built With
 
 [![DotNet][CSharp]][DotNetUrl]<br>
 [![Rider][Rider]][RiderUrl]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -80,18 +74,10 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See [`LICENSE`][license-url] for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -100,16 +86,14 @@ Lily - [@MintLiIy](https://x.com/MintLiIy) - contact@mintylabs.dev
 
 Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/MintLily/VRStartAssistant)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * Othneil Drew - for the [README Style](https://github.com/othneildrew/Best-README-Template)
 * Katie - For help with the Windows API (From [WindowsXSO][WindowsXSOUrl])
-* [xenolightning ](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
+* [xenolightning](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
+* [Home Assistant](https://www.home-assistant.io/) - For their [RestAPI](https://developers.home-assistant.io/docs/api/rest/) docs
+* * [Elly](https://github.com/Ellyvr) ([GitLab](https://git.ellyvr.dev/Elly)) - For sanity checking my first time use of websocket/api things in C# using [RestSharp](https://restsharp.dev/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
