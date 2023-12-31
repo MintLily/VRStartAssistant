@@ -57,8 +57,8 @@ It also automatically turns on some smart plugs used for Base Stations, and turn
 
 ### Built With
 
-[![DotNet][CSharp]][DotNetUrl]<br>
-[![Rider][Rider]][RiderUrl]
+[![Rider][Rider]][RiderUrl] [![DotNet][CSharp]][DotNetUrl] [![Sublime Text][Sublime]][SublimeUrl]<br>
+[![AudioSwitcher][AudioSwitcher]][AudioSwitcherUrl]<br>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -116,7 +116,22 @@ Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/
 [RiderUrl]: https://jb.gg/OpenSourceSupport
 [CSharp]: https://img.shields.io/badge/DotNet%208-512BD4?style=for-the-badge&logo=csharp&logoColor=white
 [DotNetUrl]: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
-[Obsidian]: https://img.shields.io/badge/Obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white
-[ObsidianUrl]: https://obsidian.md/
+[Sublime]: https://img.shields.io/badge/Sublime%20Text-FF9800?style=for-the-badge&logo=sublimetext&logoColor=white
+[SublimeUrl]: https://www.sublimetext.com/
+
+<!-- NuGet Packages -->
+[AudioSwitcher]: https://img.shields.io/badge/AudioSwitcher-004880?style=for-the-badge&logo=nuget&logoColor=white
+[AudioSwitcherUrl]: https://www.nuget.org/packages/AudioSwitcher.AudioApi.CoreAudio
+[RestSharp]: https://img.shields.io/badge/RestSharp-004880?style=for-the-badge&logo=nuget&logoColor=white
+[RestSharpUrl]: https://www.nuget.org/packages/RestSharp
+[Serilog]: https://img.shields.io/badge/Serilog-004880?style=for-the-badge&logo=nuget&logoColor=white
+[SerilogUrl]: https://www.nuget.org/packages/Serilog/
+[Serilog.Expressions]: https://img.shields.io/badge/Serilog.Expressions-005a80?style=for-the-badge&logo=nuget&logoColor=white
+[Serilog.Sinks.Console]: https://img.shields.io/badge/Serilog.Sinks.Console-005a80?style=for-the-badge&logo=nuget&logoColor=white
+[Serilog.Sinks.File]: https://img.shields.io/badge/Serilog.Sinks.File-005a80?style=for-the-badge&logo=nuget&logoColor=white
+[XSNotifications]: https://img.shields.io/badge/XSNotifications-004880?style=for-the-badge&logo=nuget&logoColor=white
+[XSNotificationsUrl]: https://www.nuget.org/packages/XSNotifications
+
+<!-- Other Links -->
 [XSOverlaySteam]: https://store.steampowered.com/app/1173510/XSOverlay/
 [WindowsXSOUrl]: https://github.com/Minty-Labs/WindowsXSO
