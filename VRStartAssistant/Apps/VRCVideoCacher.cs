@@ -9,6 +9,7 @@ public class VRCVideoCacher {
     public bool FailedToStart;
 
     public static async Task Start() {
+        if (!Program.ConfigurationInstance.Base.RunVrcVideoCacher) return;
         try {
             Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcvideocacher");
             if (Processes.VrcVideoCacher != null) {
@@ -30,6 +31,7 @@ public class VRCVideoCacher {
     }
     
     public void Exit() {
+        if (!Program.ConfigurationInstance.Base.RunVrcVideoCacher) return;
         if (Processes.VrcVideoCacher == null) return;
         Logger.Information("Closing VRCVideoCacher...");
         Processes.VrcVideoCacher.CloseMainWindow();
