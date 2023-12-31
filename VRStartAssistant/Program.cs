@@ -1,4 +1,4 @@
-using Serilog;
+﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -11,7 +11,7 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.6.1";
+    public const string AppVersion = "1.7.0";
     public const int TargetConfigVersion = 4;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 }
@@ -29,11 +29,7 @@ public abstract class Program {
     public static VRCVideoCacher? VrcVideoCacherInstance;
     public static AdGoBye? AdGoByeInstance;
 
-#if DEBUG
-    public static Task Main(string[] args) {
-#else
     public static async Task Main(string[] args) {
-#endif
         var levelSwitch = new LoggingLevelSwitch {
 #if DEBUG
             MinimumLevel = LogEventLevel.Debug
@@ -44,7 +40,7 @@ public abstract class Program {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
             .WriteTo.Console(new ExpressionTemplate(
-                template: "[{@t:HH:mm:ss} {@l:u3} {Coalesce(Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1),'<none>')}] {@m}\n{@x}",
+                template: "[{@t:HH:mm:ss} {@l:u3} {Coalesce(Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1),'VRSA')}] {@m}\n{@x}",
                 theme: TemplateTheme.Literate))
             .CreateLogger();
 
@@ -72,7 +68,7 @@ public abstract class Program {
         Console.ReadLine();
         await Integrations.HASS.ToggleBaseStations(true);
 #else
-        await _steamVrInstance.StartAsync();               // Start SteamVR, Start VRChat, Switch Audio
+        await _steamVrInstance.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
         await _processesInstance.GetOtherProcesses();     // Get Other Processes
         await _windowMinimizerInstance.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
         await _windowsXsoInstance.StartAsync();           // Start XSO

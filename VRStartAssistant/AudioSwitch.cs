@@ -20,7 +20,7 @@ public class AudioSwitch {
             foreach (var dev in devices) {
                 Log.Debug("{0} - {1} - Is Muted: {2} - Volume: {3}", dev.FullName, dev.Id, dev.IsMuted, dev.Volume);
             }
-            Log.Information("[{0}] Is Debug Build ... Not changing audio device", "AUDIO");
+            Logger.Information("Is Debug Build ... Not changing audio device");
             return;
 #endif
             var device = await controller.GetDeviceAsync(Guid.Parse(Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Guid));

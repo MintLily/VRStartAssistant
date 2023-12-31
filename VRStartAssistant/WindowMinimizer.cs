@@ -28,15 +28,20 @@ public class WindowMinimizer {
             ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
         }
         
-        if (Processes.VrcVideoCacher is not null) {
-            Logger.Information("Minimizing VRCVideoCacher...");
-            ShowWindow(Processes.VrcVideoCacher.MainWindowHandle, 6);
+        if (Processes.WindowsTerminal is not null) {
+            Logger.Information("Minimizing Windows Terminal...");
+            ShowWindow(Processes.WindowsTerminal.MainWindowHandle, 6);
         }
-
-        if (Processes.AdGoBye is not null) {
-            Logger.Information("Minimizing AdGoBye...");
-            ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
-        }
+        
+        // if (Program.ConfigurationInstance.Base.RunVrcVideoCacher && Processes.VrcVideoCacher is not null) {
+        //     Logger.Information("Minimizing VRCVideoCacher...");
+        //     ShowWindow(Processes.VrcVideoCacher.MainWindowHandle, 6);
+        // }
+        //
+        // if (Program.ConfigurationInstance.Base.RunAdGoBye && Processes.AdGoBye is not null) {
+        //     Logger.Information("Minimizing AdGoBye...");
+        //     ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
+        // }
         
         if (Program.ConfigurationInstance.Base.RunBetterIndexFinger && Processes.BetterIndexFinger is not null) {
             Logger.Information("Minimizing BetterIndexFinger...");

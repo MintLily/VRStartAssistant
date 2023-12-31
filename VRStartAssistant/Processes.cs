@@ -16,10 +16,12 @@ public class Processes {
     public static Process? BetterIndexFinger;
 
     /* External Processes */
+    public static Process? WindowsTerminal;
     public static Process? Oyasumi;
 
     public async Task GetOtherProcesses() {
         await Task.Delay(TimeSpan.FromSeconds(8));
         Oyasumi = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "OyasumiVR");
+        WindowsTerminal = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "WindowsTerminal");
     }
 }
