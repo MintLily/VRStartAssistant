@@ -10,7 +10,7 @@ public class Processes {
     /* In-App Processes */
     public static Process? SteamVrProcess;
     public static Process? VrChatProcess;
-    public static Process? VrcxProcess;
+    public static List<Process>? VrcxProcesses;
     public static Process? VrcVideoCacher;
     public static Process? AdGoBye;
     public static Process? BetterIndexFinger;

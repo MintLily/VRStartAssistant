@@ -9,9 +9,9 @@ public class VRCX {
 
     public static void Start() {
         try {
-            Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
-            if (Processes.VrcxProcess != null) {
-                Logger.Information("VRCX is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcxProcess.Id);
+            Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("vrcx")).ToList();
+            if (Processes.VrcxProcesses.Count != 0) {
+                Logger.Information("VRCX is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcxProcesses.First().Id);
                 return;
             }
         }
@@ -25,15 +25,21 @@ public class VRCX {
         //     UseShellExecute = false,
         // });
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VRCX", "VRCX.exe"));
-        Processes.VrcxProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcx");
+        GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore();
     }
     
     public void Exit() {
-        if (Processes.VrcxProcess == null) return;
+        if (Processes.VrcxProcesses.Count == 0) return;
         Logger.Information("Closing VRCX...");
-        Processes.VrcxProcess.CloseMainWindow();
-        Processes.VrcxProcess.Kill();
-        // double make sure it gets killed
-        Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcx")?.Kill();
+        foreach (var vrcx in Processes.VrcxProcesses) {
+            vrcx.CloseMainWindow();
+            vrcx.Kill();
+        }
+    }
+    
+    private static async void GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore() {
+        await Task.Delay(TimeSpan.FromSeconds(30));
+        Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("vrcx")).ToList();
+        Logger.Debug("Got VRCX Processes: {0}", Processes.VrcxProcesses.Count);
     }
 }
