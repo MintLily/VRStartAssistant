@@ -49,9 +49,11 @@ public class Config {
             HASS = new HASS {
                 Host = "",
                 Token = "",
-                BaseStationEntityId_1 = "",
-                BaseStationEntityId_2 = "",
-                BaseStationEntityId_3 = ""
+                BaseStationEntityIds = [""],
+                HueLightEntityIds = [""],
+                AccentLightCutoff = 0,
+                LightBrightness = 0.0f,
+                LightColor = [0, 0, 0]
             },
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
