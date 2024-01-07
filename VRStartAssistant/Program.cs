@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -67,6 +67,7 @@ public abstract class Program {
         Log.Debug("Press any key to exit...");
         Console.ReadLine();
         await Integrations.HASS.ToggleBaseStations(true);
+        VrcxInstance.Exit();
 #else
         await _steamVrInstance.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
         await _processesInstance.GetOtherProcesses();     // Get Other Processes
