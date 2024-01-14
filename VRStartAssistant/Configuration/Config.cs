@@ -50,6 +50,7 @@ public class Config {
                 Host = "",
                 Token = "",
                 BaseStationEntityIds = [""],
+                ControlLights = true,
                 HueLightEntityIds = [""],
                 AccentLightCutoff = 0,
                 LightBrightness = 0.0f,

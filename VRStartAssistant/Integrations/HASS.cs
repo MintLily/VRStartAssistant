@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using Serilog;
+using VRStartAssistant.Configuration;
 
 namespace VRStartAssistant.Integrations;
 
@@ -45,6 +46,11 @@ public class HASS {
         }
         catch (Exception e) {
             Logger.Error(e, "Failed to toggle Base Stations");
+        }
+
+        if (!hass.ControlLights) {
+            client.Dispose();
+            return;
         }
 
         // Set Light Brightness + Color

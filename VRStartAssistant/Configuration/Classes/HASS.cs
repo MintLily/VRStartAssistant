@@ -4,6 +4,7 @@ public class HASS {
     public string Host { get; set; } = "";
     public string Token { get; set; } = "";
     public List<string> BaseStationEntityIds { get; set; } = new();
+    public bool ControlLights { get; set; } = true;
     public List<string> HueLightEntityIds { get; set; } = new();
     public int AccentLightCutoff { get; set; } = 0;
     public float LightBrightness { get; set; } = 0.0f;
