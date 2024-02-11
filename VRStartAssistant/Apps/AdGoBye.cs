@@ -7,7 +7,7 @@ public class AdGoBye {
     public AdGoBye() => Logger.Information("Setting up module :: {Description}", "Removes things from within VRChat");
     private static readonly ILogger Logger = Log.ForContext(typeof(AdGoBye));
     
-    public async Task Start() {
+    public static async Task Start() {
         if (!Program.ConfigurationInstance.Base.RunAdGoBye) return;
         try {
             Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "adgobye");
@@ -29,7 +29,7 @@ public class AdGoBye {
         Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "adgobye");
     }
     
-    public void Exit() {
+    public static void Exit() {
         if (!Program.ConfigurationInstance.Base.RunAdGoBye) return;
         if (Processes.AdGoBye == null) return;
         Logger.Information("Closing AdGoBye...");

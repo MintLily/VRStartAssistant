@@ -11,23 +11,13 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.8.0";
+    public const string AppVersion = "1.8.2";
     public const int TargetConfigVersion = 6;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 }
 
 public abstract class Program {
     public static Config? ConfigurationInstance;
-    public static AudioSwitch? AudioSwitchInstance;
-    private static WindowsXSO? _windowsXsoInstance;
-    private static WindowMinimizer? _windowMinimizerInstance;
-    private static Processes? _processesInstance;
-    
-    public static VRChat? VrChatInstance;
-    public static VRCX? VrcxInstance;
-    private static SteamVR? _steamVrInstance;
-    public static VRCVideoCacher? VrcVideoCacherInstance;
-    public static AdGoBye? AdGoByeInstance;
 
     public static async Task Main(string[] args) {
         var levelSwitch = new LoggingLevelSwitch {
@@ -42,37 +32,32 @@ public abstract class Program {
             .WriteTo.Console(new ExpressionTemplate(
                 template: "[{@t:HH:mm:ss} {@l:u3} {Coalesce(Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1),'VRSA')}] {@m}\n{@x}",
                 theme: TemplateTheme.Literate))
+            .WriteTo.File(Path.Combine(Environment.CurrentDirectory, "Logs", "start_.log"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 10,
+                rollOnFileSizeLimit: true,
+                fileSizeLimitBytes: 1024000000L)
             .CreateLogger();
 
         ChangeConsoleTitle();
         
         ConfigurationInstance = new Config();
         ConfigurationInstance.Load();
-        AudioSwitchInstance = new AudioSwitch();
-        _windowsXsoInstance = new WindowsXSO();
-        _windowMinimizerInstance = new WindowMinimizer();
-        _processesInstance = new Processes();
         
-        // var processes = new Processes();
-        VrcxInstance = new VRCX();
-        _steamVrInstance = new SteamVR();
-        VrChatInstance = new VRChat();
-        VrcVideoCacherInstance = new VRCVideoCacher();
-        AdGoByeInstance = new AdGoBye();
-        
-        await Integrations.HASS.ToggleBaseStations();     // Turns on Base Stations
-        VRCX.Start();                                     // Start VRCX
+        await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
+        VRCX.Start();                                 // Start VRCX
 #if DEBUG
-        AudioSwitchInstance.Start().GetAwaiter().GetResult();
+        await AudioSwitch.Start();
         Log.Debug("Press any key to exit...");
-        Console.ReadLine();
+        Console.ReadKey();
         await Integrations.HASS.ToggleBaseStations(true);
-        VrcxInstance.Exit();
+        VRCX.Exit();
 #else
-        await _steamVrInstance.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
-        await _processesInstance.GetOtherProcesses();     // Get Other Processes
-        await _windowMinimizerInstance.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
-        await _windowsXsoInstance.StartAsync();           // Start XSO
+        await Secret.SecretApp1.Start();         // Start SecretApp1
+        await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
+        await Processes.GetOtherProcesses();     // Get Other Processes
+        await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
+        await WindowsXSO.StartAsync();           // Start XSO
 #endif
     }
 

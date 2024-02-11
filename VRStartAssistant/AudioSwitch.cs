@@ -11,7 +11,7 @@ public class AudioSwitch {
     public AudioSwitch() => Logger.Information("Setting up module :: {Description}", "Automatically switches to specific audio devices");
     private static readonly ILogger Logger = Log.ForContext(typeof(AudioSwitch));
 
-    public async Task Start() {
+    public static async Task Start() {
         Logger.Information("Attempting to set default audio device to {Device}...", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Name);
         try {
             var controller = new CoreAudioController();

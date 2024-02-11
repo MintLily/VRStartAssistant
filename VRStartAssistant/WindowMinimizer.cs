@@ -18,7 +18,7 @@ public class WindowMinimizer {
     [DllImport("kernel32.dll")]
     private static extern IntPtr GetConsoleWindow();
     
-    public async Task DelayedMinimize() {
+    public static async Task DelayedMinimize() {
         await Task.Delay(TimeSpan.FromSeconds(30));
         
         ShowWindow(GetConsoleWindow(), 0); // Hide this console window

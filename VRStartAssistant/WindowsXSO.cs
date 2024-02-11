@@ -3,7 +3,6 @@ using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
 using VRStartAssistant.Apps;
-using VRStartAssistant.Configuration;
 using XSNotifications;
 using XSNotifications.Enum;
 
@@ -18,7 +17,7 @@ public class WindowsXSO {
     private static readonly List<string> TargetApplicationNames = Program.ConfigurationInstance.Base.WinXSO.Settings.Applications.ToList();
     private static readonly XSNotifier XsNotifier = new();
     
-    public async Task StartAsync() {
+    public static async Task StartAsync() {
         _listener = UserNotificationListener.Current;
         var accessStatus = _listener.RequestAccessAsync().GetResults();
 
@@ -63,12 +62,13 @@ public class WindowsXSO {
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) {
                 await SteamVR.Exit();
-                Program.VrcxInstance!.Exit();
             }
             
             if (Processes.VrChatProcess is { HasExited: true }) {
-                Program.VrcVideoCacherInstance!.Exit();
-                Program.AdGoByeInstance!.Exit();
+                VRCVideoCacher.Exit();
+                AdGoBye.Exit();
+                VRCX.Exit();
+                Secret.SecretApp1.Exit();
             }
             
             IReadOnlyList<UserNotification> readOnlyListOfNotifications = _listener.GetNotificationsAsync(NotificationKinds.Toast).AsTask().Result;

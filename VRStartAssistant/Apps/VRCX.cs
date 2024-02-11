@@ -28,7 +28,7 @@ public class VRCX {
         GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore();
     }
     
-    public void Exit() {
+    public static void Exit() {
         if (Processes.VrcxProcesses.Count == 0) return;
         Logger.Information("Closing VRCX...");
         foreach (var vrcx in Processes.VrcxProcesses) {

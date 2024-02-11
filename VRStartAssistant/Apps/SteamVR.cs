@@ -7,7 +7,7 @@ public class SteamVR {
     public SteamVR() => Logger.Information("Setting up module :: {Description}", "Starts SteamVR");
     private static readonly ILogger Logger = Log.ForContext(typeof(SteamVR));
 
-    public async Task StartAsync() {
+    public static async Task StartAsync() {
         Logger.Information("Starting SteamVR...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/250820");
         try {
@@ -16,7 +16,7 @@ public class SteamVR {
                 Logger.Information("SteamVR is {0} with process ID {1}; not re-launching.", "already running", Processes.SteamVrProcess.Id);
                 Logger.Information("SteamVR detected. This {0} will close when SteamVR closes...", Vars.AppName);
                 await Task.Delay(TimeSpan.FromSeconds(2));
-                await Program.VrChatInstance.Start();
+                await VRChat.Start();
                 return;
             }
         }
@@ -37,7 +37,7 @@ public class SteamVR {
         }
 
         await Task.Delay(TimeSpan.FromSeconds(2));
-        await Program.VrChatInstance.Start();
+        await VRCVideoCacher.Start();
     }
     
     public static async Task Exit() {

@@ -14,12 +14,14 @@ public class Processes {
     public static Process? VrcVideoCacher;
     public static Process? AdGoBye;
     public static Process? BetterIndexFinger;
+    /* Secret things */
+    public static Process? SecretApp1;
 
     /* External Processes */
     public static Process? WindowsTerminal;
     public static Process? Oyasumi;
 
-    public async Task GetOtherProcesses() {
+    public static async Task GetOtherProcesses() {
         await Task.Delay(TimeSpan.FromSeconds(8));
         Oyasumi = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "OyasumiVR");
         WindowsTerminal = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "WindowsTerminal");
