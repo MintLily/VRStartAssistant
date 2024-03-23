@@ -125,9 +125,8 @@ public class WindowsXSO {
         
                     XsNotifier.SendNotification(xsNotification);
                     Logger.Information("Notification sent from {0}: \"{1} - {2}\"", appName, title, text);
-#if DEBUG
-                    Logger.Debug("JSON: {0}\n", xsNotification.AsJson());
-#endif
+                    if (Vars.IsDebug)
+                        Logger.Debug("JSON: {0}\n", xsNotification.AsJson());
                 }
                 catch (Exception e) {
                     Logger.Error(e, "Error sending notification.");

@@ -14,18 +14,20 @@ public static class Vars {
     public const string AppVersion = "1.8.2";
     public const int TargetConfigVersion = 7;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
+#if DEBUG
+    public static bool IsDebug = true;
+#else
+    public static bool IsDebug;
+#endif
 }
 
 public abstract class Program {
     public static Config? ConfigurationInstance;
 
     public static async Task Main(string[] args) {
+        Vars.IsDebug = args.Contains("--debug");
         var levelSwitch = new LoggingLevelSwitch {
-#if DEBUG
-            MinimumLevel = LogEventLevel.Debug
-#else
-            MinimumLevel = LogEventLevel.Information
-#endif
+            MinimumLevel = Vars.IsDebug ? LogEventLevel.Debug : LogEventLevel.Information
         };
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
@@ -46,19 +48,19 @@ public abstract class Program {
         
         await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
         VRCX.Start();                                 // Start VRCX
-#if DEBUG
-        await AudioSwitch.Start();
-        Log.Debug("Press any key to exit...");
-        Console.ReadKey();
-        await Integrations.HASS.ToggleBaseStations(true);
-        VRCX.Exit();
-#else
-        await Secret.SecretApp1.Start();         // Start SecretApp1
+        if (Vars.IsDebug) {
+            await AudioSwitch.Start();
+            Log.Debug("Press any key to exit...");
+            Console.ReadKey();
+            await Integrations.HASS.ToggleBaseStations(true);
+            VRCX.Exit();
+        }
+        await AdGoBye.Start();                   // Start AdGoBye
+        await SecretApp1.Start();                // Start SecretApp1
         await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
         await Processes.GetOtherProcesses();     // Get Other Processes
         await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
         await WindowsXSO.StartAsync();           // Start XSO
-#endif
     }
 
     public static void ChangeConsoleTitle() {
