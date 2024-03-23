@@ -10,23 +10,29 @@ public class AdGoBye {
     public static async Task Start() {
         if (!Program.ConfigurationInstance.Base.RunAdGoBye) return;
         try {
-            Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "adgobye");
+            Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "adgobye");
             if (Processes.AdGoBye != null) {
                 Logger.Information("AdGoBye is {0} with process ID {1}; not re-launching.", "already running", Processes.AdGoBye.Id);
                 return;
             }
         }
         catch {/*ignore*/}
-        Logger.Information("Starting AdGoBye...");
-        // Process.Start(Path.Combine(Vars.BaseDir, "extras", "AGB", "AdGoBye.exe"));
-        Process.Start(new ProcessStartInfo {
-            WorkingDirectory = Path.Combine(Vars.BaseDir, "extras", "AGB"),
-            FileName = Path.Combine(Vars.BaseDir, "extras", "AGB", "AdGoBye.exe"),
-            CreateNoWindow = false,
-            UseShellExecute = false
-        });
-        await Task.Delay(TimeSpan.FromSeconds(1));
-        Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "adgobye");
+
+        try {
+            Logger.Information("Starting AdGoBye...");
+            // Process.Start(Path.Combine(Vars.BaseDir, "extras", "AGB", "AdGoBye.exe"));
+            Process.Start(new ProcessStartInfo {
+                WorkingDirectory = Path.Combine(Vars.BaseDir, "extras", "AGB"),
+                FileName = Path.Combine(Vars.BaseDir, "extras", "AGB", "AdGoBye.exe"),
+                CreateNoWindow = false,
+                UseShellExecute = false
+            });
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "adgobye");
+        }
+        catch (Exception ex) {
+            Logger.Error(ex, "Failed to start AdGoBye");
+        }
     }
     
     public static void Exit() {
