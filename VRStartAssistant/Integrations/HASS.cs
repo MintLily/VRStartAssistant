@@ -1,6 +1,5 @@
 ﻿using RestSharp;
 using Serilog;
-using VRStartAssistant.Configuration;
 
 namespace VRStartAssistant.Integrations;
 

@@ -9,7 +9,7 @@ public class VRCX {
 
     public static void Start() {
         try {
-            Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("vrcx")).ToList();
+            Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.Contains("vrcx", StringComparison.CurrentCultureIgnoreCase)).ToList();
             if (Processes.VrcxProcesses.Count != 0) {
                 Logger.Information("VRCX is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcxProcesses.First().Id);
                 return;
@@ -39,7 +39,7 @@ public class VRCX {
     
     private static async void GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore() {
         await Task.Delay(TimeSpan.FromSeconds(30));
-        Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("vrcx")).ToList();
+        Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.Contains("vrcx", StringComparison.CurrentCultureIgnoreCase)).ToList();
         Logger.Debug("Got VRCX Processes: {0}", Processes.VrcxProcesses.Count);
     }
 }

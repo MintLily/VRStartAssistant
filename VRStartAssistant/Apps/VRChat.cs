@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 using VRStartAssistant.Secret;
 
@@ -9,7 +9,6 @@ public class VRChat {
     private static readonly ILogger Logger = Log.ForContext(typeof(VRChat));
 
     public static async Task Start() {
-        await AdGoBye.Start();
         Logger.Information("Starting VRChat...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/438100");
         await Task.Delay(TimeSpan.FromSeconds(5));
@@ -18,7 +17,7 @@ public class VRChat {
         await Task.Delay(TimeSpan.FromSeconds(15));
         
         Logger.Information("Attempting to detect VRChat...");
-        Processes.VrChatProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrchat");
+        Processes.VrChatProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrchat");
         if (Processes.VrChatProcess == null) {
             Logger.Warning("VRChat was {0}. Game will not minimize.", "not detected");
             return;
@@ -32,6 +31,5 @@ public class VRChat {
             VRCVideoCacher.FailedToStart = true;
         }
         SecretApp1.Start();
-        BetterIndexFinger.Start();
     }
 }

@@ -11,7 +11,7 @@ public class VRCVideoCacher {
     public static async Task Start() {
         if (!Program.ConfigurationInstance.Base.RunVrcVideoCacher) return;
         try {
-            Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcvideocacher");
+            Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcvideocacher");
             if (Processes.VrcVideoCacher != null) {
                 Logger.Information("VRCVideoCacher is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcVideoCacher.Id);
                 return;
@@ -27,7 +27,7 @@ public class VRCVideoCacher {
             UseShellExecute = false
         });
         await Task.Delay(TimeSpan.FromSeconds(1));
-        Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrcvideocacher");
+        Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcvideocacher");
     }
     
     public static void Exit() {

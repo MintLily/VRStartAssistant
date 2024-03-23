@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -30,7 +30,9 @@ public class WindowMinimizer {
         
         if (Processes.WindowsTerminal is not null) {
             Logger.Information("Minimizing Windows Terminal...");
-            ShowWindow(Processes.WindowsTerminal.MainWindowHandle, 6);
+            foreach (var terms in Processes.WindowsTerminal) {
+                ShowWindow(terms.MainWindowHandle, 6);
+            }
         }
         
         // if (Program.ConfigurationInstance.Base.RunVrcVideoCacher && Processes.VrcVideoCacher is not null) {
@@ -42,9 +44,5 @@ public class WindowMinimizer {
         //     Logger.Information("Minimizing AdGoBye...");
         //     ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
         // }
-        if (Processes.Oyasumi is not null) {
-            Logger.Information("Minimizing Oyasumi...");
-            ShowWindow(Processes.Oyasumi.MainWindowHandle, 6);
-        }
     }
 }
