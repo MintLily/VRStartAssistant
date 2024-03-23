@@ -11,7 +11,7 @@ public class SteamVR {
         Logger.Information("Starting SteamVR...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/250820");
         try {
-            Processes.SteamVrProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrserver");
+            Processes.SteamVrProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrserver");
             if (Processes.SteamVrProcess != null) {
                 Logger.Information("SteamVR is {0} with process ID {1}; not re-launching.", "already running", Processes.SteamVrProcess.Id);
                 Logger.Information("SteamVR detected. This {0} will close when SteamVR closes...", Vars.AppName);
@@ -26,7 +26,7 @@ public class SteamVR {
         await Task.Delay(TimeSpan.FromSeconds(5));
         try {
             Logger.Information("Attempting to detect SteamVR...");
-            Processes.SteamVrProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p.ProcessName.ToLower() == "vrserver");
+            Processes.SteamVrProcess = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrserver");
             if (Processes.SteamVrProcess != null/* && Processes.SteamVrProcess.ProcessName.ToLower() == "vrserver"*/)
                 Logger.Information("SteamVR detected. This {0} will close when SteamVR closes...", Vars.AppName);
             else
@@ -37,7 +37,7 @@ public class SteamVR {
         }
 
         await Task.Delay(TimeSpan.FromSeconds(2));
-        await VRCVideoCacher.Start();
+        await VRChat.Start();
     }
     
     public static async Task Exit() {

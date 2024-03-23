@@ -5,6 +5,7 @@ using VRStartAssistant.Apps;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
 using VRStartAssistant.Configuration;
+using VRStartAssistant.Secret;
 
 namespace VRStartAssistant;
 

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Serilog;
 using VRStartAssistant.Secret;
 
@@ -30,6 +30,5 @@ public class VRChat {
             Logger.Error(ex, "Failed to start VRCVideoCacher");
             VRCVideoCacher.FailedToStart = true;
         }
-        SecretApp1.Start();
     }
 }
