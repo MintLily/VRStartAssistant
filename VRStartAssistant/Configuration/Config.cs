@@ -58,8 +58,7 @@ public class Config {
             },
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
-            RunAdGoBye = false,
-            RunBetterIndexFinger = false
+            RunAdGoBye = false
         };
         
         bool update;

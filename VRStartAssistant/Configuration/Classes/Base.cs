@@ -8,5 +8,4 @@ public class Base {
     public bool RunSecretApp1 { get; set; } = false;
     public bool RunVrcVideoCacher { get; set; } = false;
     public bool RunAdGoBye { get; set; } = false;
-    public bool RunBetterIndexFinger { get; set; } = false;
 }
