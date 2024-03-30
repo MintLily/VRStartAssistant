@@ -62,14 +62,18 @@ public class WindowsXSO {
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) {
                 await SteamVR.Exit();
-            }
-            
-            if (Processes.VrChatProcess is { HasExited: true }) {
                 VRCVideoCacher.Exit();
                 AdGoBye.Exit();
                 VRCX.Exit();
                 Secret.SecretApp1.Exit();
             }
+            
+            // if (Processes.VrChatProcess is { HasExited: true }) {
+            //     VRCVideoCacher.Exit();
+            //     AdGoBye.Exit();
+            //     VRCX.Exit();
+            //     Secret.SecretApp1.Exit();
+            // }
             
             IReadOnlyList<UserNotification> readOnlyListOfNotifications = _listener.GetNotificationsAsync(NotificationKinds.Toast).AsTask().Result;
             
