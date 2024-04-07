@@ -58,7 +58,7 @@ public abstract class Program {
         }
         await AdGoBye.Start();                   // Start AdGoBye
         await SecretApp1.Start();                // Start SecretApp1
-        await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
+        await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
         await HOSCY.Start();                     // Start HOSCY
         await Processes.GetOtherProcesses();     // Get Other Processes
         await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye

@@ -56,6 +56,7 @@ public class Config {
                 LightBrightness = 0.0f,
                 LightColor = [0, 0, 0]
             },
+            ShowMediaStatus = false,
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
             RunAdGoBye = false

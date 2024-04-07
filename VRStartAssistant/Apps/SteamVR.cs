@@ -37,6 +37,7 @@ public class SteamVR {
         }
 
         await Task.Delay(TimeSpan.FromSeconds(2));
+        OscMedia.StartMediaDetection();
         await VRChat.Start();
     }
     
