@@ -6,7 +6,7 @@ using LucHeart.CoreOSC;
 using Serilog;
 
 namespace VRStartAssistant;
-// A lot of this came from https://github.com/PaciStardust/HOSCY
+// A lot of this came from https://github.com/PaciStardust/HOSCY :: Paci's Code Should follow their GPL-2.0 License
 // as well as my girlfriend's private project
 
 public class OscMedia {
