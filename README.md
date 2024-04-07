@@ -6,7 +6,6 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
-<!-- [![Issues][issues-shield]][issues-url] -->
 
 </div>
 
@@ -15,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Minty-Labs/WindowsXSO">
-    <img src="Resources/banner.png" alt="Banner Logo" height="200">
+    <img src="Resources/banner.webp" alt="Banner Logo" height="200">
   </a>
 
   <h3 align="center">VRStartAssistant</h3>
@@ -40,7 +39,6 @@
       </ul>
     </li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -50,7 +48,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [VRChat](https://hello.vrchat.com/), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), and (a custom/beta version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
+An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [VRChat](https://hello.vrchat.com/), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [HOSCY](https://github.com/PaciStardust/HOSCY), and (a custom/beta version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
 <br>
 It also automatically turns on some smart plugs used for Base Stations, and turns them off upon SteamVR exit.
 
@@ -60,19 +58,13 @@ It also automatically turns on some smart plugs used for Base Stations, and turn
 [![AudioSwitcher][AudioSwitcher]][AudioSwitcherUrl]<br>
 [![RestSharp][RestSharp]][RestSharpUrl]<br>
 [![Serilog][Serilog]][SerilogUrl] &nbsp;&nbsp;&nbsp; ![Serilog.Expressions] ![Serilog.Sinks.Console] ![Serilog.Sinks.File]<br>
-[![XSNotifications][XSNotifications]][XSNotificationsUrl]
+[![XSNotifications][XSNotifications]][XSNotificationsUrl]<br>
+[![CoreOSC][CoreOSC]][CoreOSCUrl]
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See [`LICENSE`][license-url] for more information.
-
-<!-- CONTACT -->
-## Contact
-
-Lily - [@MintLiIy](https://x.com/MintLiIy) - contact@mintylabs.dev
-
-Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/MintLily/VRStartAssistant)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -119,6 +111,8 @@ Project Link: [https://github.com/MintLily/VRStartAssistant](https://github.com/
 [Serilog.Sinks.File]: https://img.shields.io/badge/Serilog.Sinks.File-005a80?style=for-the-badge&logo=nuget&logoColor=white
 [XSNotifications]: https://img.shields.io/badge/XSNotifications-004880?style=for-the-badge&logo=nuget&logoColor=white
 [XSNotificationsUrl]: https://www.nuget.org/packages/XSNotifications
+[CoreOSC]: https://img.shields.io/badge/LucHeart.CoreOSC-004880?style=for-the-badge&logo=nuget&logoColor=white
+[CoreOSCUrl]: https://www.nuget.org/packages/LucHeart.CoreOSC
 
 <!-- Other Links -->
 [XSOverlaySteam]: https://store.steampowered.com/app/1173510/XSOverlay/

@@ -1,4 +1,4 @@
-using Serilog;
+﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -12,7 +12,7 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.8.5";
+    public const string AppVersion = "1.9.0";
     public const int TargetConfigVersion = 8;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 #if DEBUG
@@ -28,7 +28,7 @@ public abstract class Program {
     public static async Task Main(string[] args) {
         Vars.IsDebug = args.Contains("--debug");
         var levelSwitch = new LoggingLevelSwitch {
-            MinimumLevel = Vars.IsDebug ? LogEventLevel.Debug : LogEventLevel.Information
+            MinimumLevel = Vars.IsDebug ? LogEventLevel.Debug : LogEventLevel.Warning
         };
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
@@ -61,16 +61,10 @@ public abstract class Program {
         await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
         await HOSCY.Start();                     // Start HOSCY
         await Processes.GetOtherProcesses();     // Get Other Processes
-        await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
+        await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
         await ConfigurationInstance.UpdateConfigEvery10Minutes();
         await WindowsXSO.StartAsync();           // Start XSO
     }
 
-    public static void ChangeConsoleTitle() {
-#if DEBUG
-        Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + " - DEBUG";
-#else
-        Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion;
-#endif
-    }
+    public static void ChangeConsoleTitle(string extraData = "") => Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + (Vars.IsDebug ? " - DEBUG" : "") + (string.IsNullOrEmpty(extraData) ? "" : $" - {extraData}");
 }

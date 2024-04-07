@@ -35,6 +35,11 @@ public class WindowMinimizer {
             }
         }
         
+        if (Processes.HOSCY is not null) {
+            Logger.Information("Minimizing HOSCY...");
+            ShowWindow(Processes.HOSCY.MainWindowHandle, 6);
+        }
+        
         // if (Program.ConfigurationInstance.Base.RunVrcVideoCacher && Processes.VrcVideoCacher is not null) {
         //     Logger.Information("Minimizing VRCVideoCacher...");
         //     ShowWindow(Processes.VrcVideoCacher.MainWindowHandle, 6);

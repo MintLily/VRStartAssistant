@@ -66,6 +66,7 @@ public class WindowsXSO {
                 AdGoBye.Exit();
                 VRCX.Exit();
                 Secret.SecretApp1.Exit();
+                HOSCY.Exit();
             }
             
             // if (Processes.VrChatProcess is { HasExited: true }) {
