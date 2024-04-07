@@ -13,7 +13,7 @@ public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
     public const string AppVersion = "1.8.5";
-    public const int TargetConfigVersion = 7;
+    public const int TargetConfigVersion = 8;
     public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 #if DEBUG
     public static bool IsDebug = true;
@@ -62,6 +62,7 @@ public abstract class Program {
         await HOSCY.Start();                     // Start HOSCY
         await Processes.GetOtherProcesses();     // Get Other Processes
         await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
+        await ConfigurationInstance.UpdateConfigEvery10Minutes();
         await WindowsXSO.StartAsync();           // Start XSO
     }
 

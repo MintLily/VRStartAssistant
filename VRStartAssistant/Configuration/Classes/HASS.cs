@@ -6,7 +6,7 @@ public class HASS {
     public List<string> BaseStationEntityIds { get; set; } = new();
     public bool ControlLights { get; set; } = true;
     public List<string> HueLightEntityIds { get; set; } = new();
-    public int AccentLightCutoff { get; set; } = 0;
+    public List<string> ExtraHueLightEntityIds { get; set; } = new();
     public float LightBrightness { get; set; } = 0.0f;
     public float[] LightColor { get; set; } = [255f, 255f, 255f];
 }

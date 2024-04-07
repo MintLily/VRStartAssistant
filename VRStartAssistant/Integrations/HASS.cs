@@ -6,6 +6,7 @@ namespace VRStartAssistant.Integrations;
 public class HASS {
     public HASS() => Logger.Information("Setting up module :: {Description}", "Controls Home Assistant devices");
     private static readonly ILogger Logger = Log.ForContext(typeof(HASS));
+    private static int _requestCount = 0;
 
     public static async Task ToggleBaseStations(bool toggleOff = false) {
         var hass = Program.ConfigurationInstance.Base.HASS;
@@ -55,34 +56,52 @@ public class HASS {
         // Set Light Brightness + Color
         try {
             var dic = new Dictionary<int, RestRequest>();
-            for (var i = 0; i < hass.HueLightEntityIds.Count; i++) // create requests based on how many lights there are whilst including the accent light cutoff (not main lights)
-                dic.Add(i, new RestRequest($"services/light/{(i > hass.AccentLightCutoff ? "turn_off" : "turn_on")}", Method.Post));
+            for (var i = 0; i < hass.HueLightEntityIds.Count; i++)
+                dic.Add(i, new RestRequest("services/light/turn_on", Method.Post));
 
             Logger.Information("Sending requests - Setting Light Brightness + Color");
-            var requestCount = 0;
             foreach (var (key, value) in dic) {
                 if (hass.HueLightEntityIds[key] == "") // if entry is empty, skip
                     continue;
-                requestCount++;
 
-                var jsonObject = $"{{\"entity_id\": \"light.{hass.HueLightEntityIds[key]}\"{
-                    (key > hass.AccentLightCutoff
-                        ? ", \"brightness\": 0" // brute-force turn off accent lights
-                        : $", \"brightness\": {hass.LightBrightness}, \"rgb_color\": [{hass.LightColor[0]}, {hass.LightColor[1]}, {hass.LightColor[2]}]")
-                }}}";
+                var jsonObject = $"{{\"entity_id\": \"light.{hass.HueLightEntityIds[key]}\", \"brightness\": {hass.LightBrightness}, \"rgb_color\": [{hass.LightColor[0]}, {hass.LightColor[1]}, {hass.LightColor[2]}]}}";
 
                 value.AddJsonBody(jsonObject);
 
                 // await Task.Delay(TimeSpan.FromMilliseconds(500)); // delay between requests to prevent overloading the server
                 // Logger.Debug("Hitting request {0} with JSON:\n{1}", requestCount, jsonObject);
                 await client.PostAsync(value);
+                _requestCount++;
             }
-
-            Logger.Information("{0} Requests sent.", requestCount);
         }
         catch (Exception e) {
             Logger.Error(e, "Failed to set light brightness + color");
         }
+        
+        // Set Extra Light Values : These will be considered to be turned off
+        try {
+            var dic = new Dictionary<int, RestRequest>();
+            for (var i = 0; i < hass.ExtraHueLightEntityIds.Count; i++)
+                dic.Add(i, new RestRequest("services/light/turn_off", Method.Post));
+
+            Logger.Information("Sending requests - Setting Extra Lights Off");
+            foreach (var (key, value) in dic) {
+                if (hass.ExtraHueLightEntityIds[key] == "") // if entry is empty, skip
+                    continue;
+
+                var jsonObject = $"{{\"entity_id\": \"light.{hass.ExtraHueLightEntityIds[key]}\"";
+
+                value.AddJsonBody(jsonObject);
+                
+                await client.PostAsync(value);
+                _requestCount++;
+            }
+        }
+        catch (Exception e) {
+            Logger.Error(e, "Failed to set extra lights off");
+        }
+
+        Logger.Information("{0} Requests sent.", _requestCount);
 
         client.Dispose();
     }

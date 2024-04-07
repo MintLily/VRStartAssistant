@@ -1,14 +1,14 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
 namespace VRStartAssistant.Configuration; 
 
 public class Config {
-    public Base Base { get; private set; }
+    public Base? Base { get; private set; }
     private readonly ILogger _logger = Log.ForContext(typeof(Config));
 
-    public void Load() {
+    internal void Load() {
         var hasFile = File.Exists("VRStartAssistant.config.json");
         
         var defaultConfig = new Base {
@@ -47,24 +47,24 @@ public class Config {
                 }
             },
             HASS = new HASS {
-                Host = "",
+                Host = "http://127.0.0.1:8123/",
                 Token = "",
                 BaseStationEntityIds = [""],
-                ControlLights = true,
+                ControlLights = false,
                 HueLightEntityIds = [""],
-                AccentLightCutoff = 0,
+                ExtraHueLightEntityIds = [""],
                 LightBrightness = 0.0f,
                 LightColor = [0, 0, 0]
             },
             ShowMediaStatus = false,
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
-            RunAdGoBye = false
+            RunAdGoBye = false,
             RunHOSCY = false
         };
         
         bool update;
-        Base config = null;
+        Base? config = null;
         if (hasFile) {
             var oldJson = File.ReadAllText("VRStartAssistant.config.json");
             config = JsonSerializer.Deserialize<Base>(oldJson);
@@ -85,5 +85,13 @@ public class Config {
         Base = config ?? defaultConfig;
     }
     
-    public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
+    // public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
+
+    internal async Task UpdateConfigEvery10Minutes() {
+        while (true) {
+            await Task.Delay(TimeSpan.FromMinutes(10));
+            Load();
+        }
+        // ReSharper disable once FunctionNeverReturns
+    }
 }
