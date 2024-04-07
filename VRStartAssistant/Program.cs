@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -59,6 +59,7 @@ public abstract class Program {
         await AdGoBye.Start();                   // Start AdGoBye
         await SecretApp1.Start();                // Start SecretApp1
         await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio
+        await HOSCY.Start();                     // Start HOSCY
         await Processes.GetOtherProcesses();     // Get Other Processes
         await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye
         await WindowsXSO.StartAsync();           // Start XSO
