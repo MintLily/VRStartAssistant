@@ -74,6 +74,7 @@ Distributed under the MIT License. See [`LICENSE`][license-url] for more informa
 * [xenolightning](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
 * [Home Assistant](https://www.home-assistant.io/) & HA Community - For their [RestAPI](https://developers.home-assistant.io/docs/api/rest/) docs
 * * [Elly](https://github.com/Ellyvr) ([GitLab](https://git.ellyvr.dev/Elly)) - For sanity checking my first time use of websocket/api things in C# using [RestSharp](https://restsharp.dev/)
+* [Paci](https://github.com/PaciStardust) - For parts of [HOSCY](https://github.com/PaciStardust/HOSCY)'s code for OSC Chatbox things
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
