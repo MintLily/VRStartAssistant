@@ -87,9 +87,9 @@ public class Config {
     
     // public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
 
-    internal async Task UpdateConfigEvery10Minutes() {
+    internal async Task UpdateConfigEvery1Minute() {
         while (true) {
-            await Task.Delay(TimeSpan.FromMinutes(10));
+            await Task.Delay(TimeSpan.FromMinutes(1));
             Load();
         }
         // ReSharper disable once FunctionNeverReturns

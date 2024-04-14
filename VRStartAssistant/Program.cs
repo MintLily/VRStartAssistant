@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using VRStartAssistant.Apps;
@@ -62,7 +62,7 @@ public abstract class Program {
         await HOSCY.Start();                     // Start HOSCY
         await Processes.GetOtherProcesses();     // Get Other Processes
         await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
-        await ConfigurationInstance.UpdateConfigEvery10Minutes();
+        await ConfigurationInstance.UpdateConfigEvery1Minute();
         await WindowsXSO.StartAsync();           // Start XSO
     }
 
