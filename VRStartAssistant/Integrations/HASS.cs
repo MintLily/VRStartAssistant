@@ -57,7 +57,7 @@ public class HASS {
         try {
             var dic = new Dictionary<int, RestRequest>();
             for (var i = 0; i < hass.HueLightEntityIds.Count; i++)
-                dic.Add(i, new RestRequest("services/light/turn_on", Method.Post));
+                dic.Add(i, new RestRequest($"services/light/{(toggleOff ? "turn_off" : "turn_on")}", Method.Post));
 
             Logger.Information("Sending requests - Setting Light Brightness + Color");
             foreach (var (key, value) in dic) {
