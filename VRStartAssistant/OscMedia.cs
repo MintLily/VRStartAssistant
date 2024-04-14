@@ -15,7 +15,7 @@ public class OscMedia {
     private static GlobalSystemMediaTransportControlsSession? _session;
     private static GlobalSystemMediaTransportControlsSessionMediaProperties? _nowPlaying;
     private static DateTime _mediaLastChanged = DateTime.MinValue;
-    private static OscDuplex _oscSender;
+    private static OscDuplex? _oscSender;
 
     private enum NotificationType {
         None,
@@ -29,6 +29,11 @@ public class OscMedia {
         _oscSender = new OscDuplex(new IPEndPoint(IPAddress.Loopback, 9001), new IPEndPoint(IPAddress.Loopback, 9000));
         Logger.Information("OSC Sender Started");
         StartMediaDetectionInternal().RunWithoutAwait();
+    }
+    
+    internal static void StopMediaDetection() {
+        _oscSender?.Dispose();
+        Logger.Information("Stopped media detection service");
     }
 
     private static async Task StartMediaDetectionInternal() {
@@ -65,7 +70,9 @@ public class OscMedia {
         if (newPlaying == null // No new playing
             || newPlaying.PlaybackType is not (MediaPlaybackType.Video or MediaPlaybackType.Music) // Not a video or music
             || playbackInfo == null || playbackInfo.PlaybackStatus != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing // No status or its not playing
-            || newPlaying.Title == null || string.IsNullOrWhiteSpace(newPlaying.Title)) // No title
+            || newPlaying.Title == null || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
+            || newPlaying.Artist == "DJ"  // Is playing from AI DJ pt1
+            || newPlaying.Title == "Welcome") // Is playing from AI DJ pt2
         {
             SetNotification(string.Empty);
             return;
@@ -103,10 +110,10 @@ public class OscMedia {
 
     private static string MediaPlayingVerb { // xyz "songname" by "artist" on "album"
         get => _mediaPlayingVerb;
-        set => _mediaPlayingVerb = value.Length > 0 ? value : "Playing";
+        set => _mediaPlayingVerb = value.Length > 0 ? value : "🎵";
     }
 
-    private static string _mediaPlayingVerb = "Playing";
+    private static string _mediaPlayingVerb = "🎵";
 
     public static string MediaArtistVerb { // Playing "songname" xyz "artist" on "album"
         get => _mediaArtistVerb;
@@ -163,9 +170,9 @@ public class OscMedia {
         _notificationType = type;
         _notification = input;
         // PageInfo.SetNotification(input, type);
-        SendOscMessage("/chatbox/input", input);
         Program.ChangeConsoleTitle(input);
         Logger.Information("Setting notification to: " + input);
+        Task.Run(async () => await SendOscMessage("/chatbox/input", input));
     }
 
     /// <summary>
@@ -186,7 +193,7 @@ public class OscMedia {
         }
     }
 
-    private static string _notificationIndicatorLeft = "(";
+    private static string _notificationIndicatorLeft = "";
 
     private static string NotificationIndicatorRight { // Text to the right of a notification
         get => _notificationIndicatorRight;
@@ -196,7 +203,7 @@ public class OscMedia {
         }
     }
 
-    private static string _notificationIndicatorRight = ")";
+    private static string _notificationIndicatorRight = "";
     private static int _notificationIndicatorLength = 2;
 
     private static int CalcNotificationIndicatorLength()
@@ -364,8 +371,10 @@ public class OscMedia {
         }
     }
 
-    private static void SendOscMessage(string address, params object[] args) {
+    private static async Task SendOscMessage(string address, params object[] args) {
         var msg = new OscMessage(address, args);
-        _oscSender.SendAsync(msg).GetAwaiter().GetResult();
+        await _oscSender.SendAsync(msg);
+        await Task.Delay(TimeSpan.FromSeconds(2));
+        await _oscSender.SendAsync(new OscMessage("/chatbox/input", string.Empty));
     }
 }
