@@ -44,6 +44,10 @@ public class SteamVR {
         if (Processes.SteamVrProcess == null) return;
         Logger.Information("SteamVR has exited. Exiting in 5 seconds...");
         await Task.Delay(TimeSpan.FromSeconds(5));
+        // if (WindowsXSO.NotificationThread.IsAlive)
+        //     WindowsXSO.NotificationThread.Abort();
+        // WindowsXSO.run = false;
+        OscMedia.StopMediaDetection();
         await Integrations.HASS.ToggleBaseStations(true);
         Process.GetCurrentProcess().Kill();
         Environment.Exit(0);

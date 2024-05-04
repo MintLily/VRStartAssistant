@@ -12,9 +12,9 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.9.1";
-    public const int TargetConfigVersion = 8;
-    public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
+    public const string AppVersion = "1.10.1";
+    public const int TargetConfigVersion = 9;
+    internal static string? BaseDir;
 #if DEBUG
     public static bool IsDebug = true;
 #else
@@ -28,7 +28,7 @@ public abstract class Program {
     public static async Task Main(string[] args) {
         Vars.IsDebug = args.Contains("--debug");
         var levelSwitch = new LoggingLevelSwitch {
-            MinimumLevel = Vars.IsDebug ? LogEventLevel.Debug : LogEventLevel.Warning
+            MinimumLevel = LogEventLevel.Information// Vars.IsDebug ? LogEventLevel.Debug : LogEventLevel.Warning
         };
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
@@ -46,6 +46,10 @@ public abstract class Program {
         
         ConfigurationInstance = new Config();
         ConfigurationInstance.Load();
+        Vars.BaseDir = ConfigurationInstance.Base.SetBaseDirectoryToDev
+            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build")
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "VRSA");
+        Log.Information("Base Directory: {0}", Vars.BaseDir);
         
         await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
         VRCX.Start();                                 // Start VRCX
@@ -56,14 +60,21 @@ public abstract class Program {
             await Integrations.HASS.ToggleBaseStations(true);
             VRCX.Exit();
         }
-        await AdGoBye.Start();                   // Start AdGoBye
-        await SecretApp1.Start();                // Start SecretApp1
-        await SteamVR.StartAsync();              // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
-        await HOSCY.Start();                     // Start HOSCY
-        await Processes.GetOtherProcesses();     // Get Other Processes
-        await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
-        await ConfigurationInstance.UpdateConfigEvery1Minute();
-        await WindowsXSO.StartAsync();           // Start XSO
+
+        try {
+            await AdGoBye.Start(); // Start AdGoBye
+            await SecretApp1.Start(); // Start SecretApp1
+            await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
+            await HOSCY.Start(); // Start HOSCY
+            await Processes.GetOtherProcesses(); // Get Other Processes
+            await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
+            // await ConfigurationInstance.UpdateConfigEvery1Minute();
+            await WindowsXSO.StartAsync(); // Start XSO
+            // WindowsXSO.NotificationThread.Start();   // Start XSO
+        }
+        catch (Exception ex) {
+            Log.Error("Something in the Startup has failed: \n{0}", ex.Message);
+        }
     }
 
     public static void ChangeConsoleTitle(string extraData = "") => Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + (Vars.IsDebug ? " - DEBUG" : "") + (string.IsNullOrEmpty(extraData) ? "" : $" - {extraData}");

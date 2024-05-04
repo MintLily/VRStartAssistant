@@ -2,12 +2,13 @@
 
 public class Base {
     public int ConfigVersion { get; set; } = Vars.TargetConfigVersion;
-    public Audio Audio { get; set; } = new();
-    public WinXSO WinXSO { get; set; } = new();
-    public HASS HASS { get; set; } = new();
-    public bool ShowMediaStatus { get; set; } = true;
-    public bool RunSecretApp1 { get; set; } = false;
-    public bool RunVrcVideoCacher { get; set; } = false;
-    public bool RunAdGoBye { get; set; } = false;
-    public bool RunHOSCY { get; set; } = false;
+    public Audio Audio { get; init; } = new();
+    public bool SetBaseDirectoryToDev { get; init; } = false;
+    public WinXSO WinXSO { get; init; } = new();
+    public HASS HASS { get; init; } = new();
+    public bool ShowMediaStatus { get; init; } = true;
+    public bool RunSecretApp1 { get; init; } = false;
+    public bool RunVrcVideoCacher { get; init; } = false;
+    public bool RunAdGoBye { get; init; } = false;
+    public bool RunHOSCY { get; init; } = false;
 }

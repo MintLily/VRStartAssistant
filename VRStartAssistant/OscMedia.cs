@@ -16,6 +16,7 @@ public class OscMedia {
     private static GlobalSystemMediaTransportControlsSessionMediaProperties? _nowPlaying;
     private static DateTime _mediaLastChanged = DateTime.MinValue;
     private static OscDuplex? _oscSender;
+    private static string AddressGameTextbox { get; set; } = "/chatbox/input";
 
     private enum NotificationType {
         None,
@@ -60,7 +61,7 @@ public class OscMedia {
         UpdateCurrentlyPlayingMediaProxy(_session);
     }
 
-    private static readonly object _lock = new();
+    private static readonly object Lock = new();
 
     private static async Task UpdateCurrentlyPlayingMedia(GlobalSystemMediaTransportControlsSession sender) {
         var newPlaying = await sender.TryGetMediaPropertiesAsync();
@@ -80,7 +81,7 @@ public class OscMedia {
 
         // Checking if the new media is the same media
         // Locked as it sometimes happens to come here multiple times concurrently
-        lock (_lock) {
+        lock (Lock) {
             if (_nowPlaying != null) // We skip this check if there is now now playing
                 if (newPlaying.Title.Equals(_nowPlaying.Title, StringComparison.OrdinalIgnoreCase) && newPlaying.Artist.Equals(_nowPlaying.Artist) && (DateTime.Now - _mediaLastChanged).TotalSeconds < 5)
                     return;
@@ -115,7 +116,7 @@ public class OscMedia {
 
     private static string _mediaPlayingVerb = "🎵";
 
-    public static string MediaArtistVerb { // Playing "songname" xyz "artist" on "album"
+    private static string MediaArtistVerb { // Playing "songname" xyz "artist" on "album"
         get => _mediaArtistVerb;
         set => _mediaArtistVerb = value.Length > 0 ? value : "by";
     }
@@ -172,7 +173,7 @@ public class OscMedia {
         // PageInfo.SetNotification(input, type);
         Program.ChangeConsoleTitle(input);
         Logger.Information("Setting notification to: " + input);
-        Task.Run(async () => await SendOscMessage("/chatbox/input", input));
+        Task.Run(async () => await SendOscMessage(AddressGameTextbox, [input, true, false]));
     }
 
     /// <summary>
@@ -211,7 +212,7 @@ public class OscMedia {
 
     private static int NotificationIndicatorLength() => _notificationIndicatorLength;
 
-    public static int MaxLength { // Max length of string displayed before cutoff
+    private static int MaxLength { // Max length of string displayed before cutoff
         get => _maxLength;
         set => _maxLength = Utils.MinMax(value, 50, 130);
     }
@@ -375,6 +376,6 @@ public class OscMedia {
         var msg = new OscMessage(address, args);
         await _oscSender.SendAsync(msg);
         await Task.Delay(TimeSpan.FromSeconds(2));
-        await _oscSender.SendAsync(new OscMessage("/chatbox/input", string.Empty));
+        await _oscSender.SendAsync(new OscMessage(AddressGameTextbox, string.Empty));
     }
 }

@@ -27,6 +27,7 @@ public class WindowMinimizer {
             Logger.Information("Minimizing VRChat...");
             ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
             OscMedia.StartMediaDetection();
+            // OscMedia.StartOscMediaThread();
         }
         
         if (Processes.WindowsTerminal is not null) {

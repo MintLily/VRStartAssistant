@@ -3,12 +3,12 @@
 namespace VRStartAssistant.Configuration.Classes; 
 
 public class Audio {
-    public int DefaultAudioDevice { get; set; } = 0;
-    public List<AudioDevices> AudioDevices { get; set; } = [];
+    public int DefaultAudioDevice { get; init; } = 0;
+    public List<AudioDevices> AudioDevices { get; init; } = [];
 }
 
 public class AudioDevices {
     public int Id { get; set; } = 0;
-    public string Name { get; set; } = "Device";
-    [JsonPropertyName("GUID")] public string Guid { get; set; } = "00000000-0000-0000-0000-000000000000";
+    public string Name { get; init; } = "Device";
+    [JsonPropertyName("GUID")] public string Guid { get; init; } = "00000000-0000-0000-0000-000000000000";
 }

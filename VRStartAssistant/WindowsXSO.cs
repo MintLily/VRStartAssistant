@@ -3,6 +3,7 @@ using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
 using VRStartAssistant.Apps;
+using VRStartAssistant.Configuration.Classes;
 using XSNotifications;
 using XSNotifications.Enum;
 
@@ -16,6 +17,8 @@ public class WindowsXSO {
     private static readonly List<uint> KnownNotifications = [];
     private static readonly List<string> TargetApplicationNames = Program.ConfigurationInstance.Base.WinXSO.Settings.Applications.ToList();
     private static readonly XSNotifier XsNotifier = new();
+    // public static Thread NotificationThread = new(StartAsync);
+    // public static bool run { get; set; }
     
     public static async Task StartAsync() {
         _listener = UserNotificationListener.Current;
@@ -57,11 +60,13 @@ public class WindowsXSO {
         Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
         Logger.Information($"{(config.Whitelist ? "Allowing" : "Blocking")} target applications: " + "{0}", string.Join(", ", config.Applications!));
         Program.ChangeConsoleTitle();
-        while (true) { // Keep the program running
+        // NotificationThread = new Thread(() => Logic(config)) { IsBackground = true };
+        
+        while (/*run*/true) { // Keep the program looping
             
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) {
-                await SteamVR.Exit();
+                SteamVR.Exit().RunWithoutAwait();
                 VRCVideoCacher.Exit();
                 AdGoBye.Exit();
                 VRCX.Exit();
@@ -137,9 +142,14 @@ public class WindowsXSO {
                     Logger.Error(e, "Error sending notification.");
                 }
             }
-            await Task.Delay(TimeSpan.FromSeconds(1));
+
+            try {
+                Program.ConfigurationInstance.Load();
+            }
+            catch {/**/}
+            Thread.Sleep(TimeSpan.FromSeconds(1));
         }
-        // ReSharper disable once FunctionNeverReturns
+        await Task.Delay(Timeout.Infinite);
     }
     
     private static int CalculateHeight(string content) =>
