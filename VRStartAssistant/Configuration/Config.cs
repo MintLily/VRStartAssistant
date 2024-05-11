@@ -35,7 +35,6 @@ public class Config {
                     }
                 ]
             },
-            SetBaseDirectoryToDev = false,
             WinXSO = new WinXSO {
                 Settings = new Settings {
                     Applications = [

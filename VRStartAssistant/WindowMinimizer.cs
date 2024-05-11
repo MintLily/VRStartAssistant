@@ -30,12 +30,12 @@ public class WindowMinimizer {
             // OscMedia.StartOscMediaThread();
         }
         
-        if (Processes.WindowsTerminal is not null) {
-            Logger.Information("Minimizing Windows Terminal...");
-            foreach (var terms in Processes.WindowsTerminal) {
-                ShowWindow(terms.MainWindowHandle, 6);
-            }
-        }
+        // if (Processes.WindowsTerminal is not null) {
+        //     Logger.Information("Minimizing Windows Terminal...");
+        //     foreach (var terms in Processes.WindowsTerminal) {
+        //         ShowWindow(terms.MainWindowHandle, 6);
+        //     }
+        // }
         
         if (Processes.HOSCY is not null) {
             Logger.Information("Minimizing HOSCY...");

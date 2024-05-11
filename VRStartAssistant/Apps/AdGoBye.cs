@@ -6,13 +6,16 @@ namespace VRStartAssistant.Apps;
 public class AdGoBye {
     public AdGoBye() => Logger.Information("Setting up module :: {Description}", "Removes things from within VRChat");
     private static readonly ILogger Logger = Log.ForContext(typeof(AdGoBye));
+    public static bool IsRunning;
     
     public static async Task Start() {
+        if (IsRunning) return;
         if (!Program.ConfigurationInstance.Base.RunAdGoBye) return;
         try {
             Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "adgobye");
             if (Processes.AdGoBye != null) {
                 Logger.Information("AdGoBye is {0} with process ID {1}; not re-launching.", "already running", Processes.AdGoBye.Id);
+                IsRunning = true;
                 return;
             }
         }
@@ -29,6 +32,7 @@ public class AdGoBye {
             });
             await Task.Delay(TimeSpan.FromSeconds(1));
             Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "adgobye");
+            IsRunning = true;
         }
         catch (Exception ex) {
             Logger.Error(ex, "Failed to start AdGoBye");

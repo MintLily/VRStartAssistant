@@ -14,18 +14,17 @@ public class WindowsXSO {
     private static readonly ILogger Logger = Log.ForContext(typeof(WindowsXSO));
 
     private static UserNotificationListener? _listener;
+    private static UserNotificationListenerAccessStatus _accessStatus;
     private static readonly List<uint> KnownNotifications = [];
     private static readonly List<string> TargetApplicationNames = Program.ConfigurationInstance.Base.WinXSO.Settings.Applications.ToList();
     private static readonly XSNotifier XsNotifier = new();
-    // public static Thread NotificationThread = new(StartAsync);
-    // public static bool run { get; set; }
     
-    public static async Task StartAsync() {
+    internal static async Task StartAsync() {
         _listener = UserNotificationListener.Current;
-        var accessStatus = _listener.RequestAccessAsync().GetResults();
+        _accessStatus = _listener.RequestAccessAsync().GetResults();
 
         var isInRestartMessage = false;
-        switch (accessStatus) {
+        switch (_accessStatus) {
             case UserNotificationListenerAccessStatus.Allowed:
                 Logger.Information("Notifications {0}.", "access granted");
                 break;
@@ -60,10 +59,21 @@ public class WindowsXSO {
         Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
         Logger.Information($"{(config.Whitelist ? "Allowing" : "Blocking")} target applications: " + "{0}", string.Join(", ", config.Applications!));
         Program.ChangeConsoleTitle();
-        // NotificationThread = new Thread(() => Logic(config)) { IsBackground = true };
+        try {
+            VRCX.Start(); // Start VRCX
+            await AdGoBye.Start(); // Start AdGoBye
+            await Secret.SecretApp1.Start(); // Start SecretApp1
+            await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
+            await HOSCY.Start(); // Start HOSCY
+            await Processes.GetOtherProcesses(); // Get Other Processes
+            await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
+        }
+        catch (Exception ex) {
+            Log.Error("Something in the Application Startup has failed: \n{0}", ex.Message + "\n" + ex.StackTrace);
+        }
         
-        while (/*run*/true) { // Keep the program looping
-            
+        Logger.Information("Starting WindowsXSO Notification Relay...");
+        while (true) { // Keep the program looping
             // Check if SteamVR is still running
             if (Processes.SteamVrProcess is { HasExited: true }) {
                 SteamVR.Exit().RunWithoutAwait();
@@ -143,13 +153,12 @@ public class WindowsXSO {
                 }
             }
 
-            try {
-                Program.ConfigurationInstance.Load();
-            }
-            catch {/**/}
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            // try {
+            //     Program.ConfigurationInstance.Load();
+            // }
+            // catch {/**/}
+            await Task.Delay(TimeSpan.FromSeconds(1));
         }
-        await Task.Delay(Timeout.Infinite);
     }
     
     private static int CalculateHeight(string content) =>

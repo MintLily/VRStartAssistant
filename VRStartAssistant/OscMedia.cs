@@ -72,7 +72,7 @@ public class OscMedia {
             || newPlaying.PlaybackType is not (MediaPlaybackType.Video or MediaPlaybackType.Music) // Not a video or music
             || playbackInfo == null || playbackInfo.PlaybackStatus != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing // No status or its not playing
             || newPlaying.Title == null || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
-            || newPlaying.Artist == "DJ"  // Is playing from AI DJ pt1
+            || newPlaying.Artist == "DJ" // Is playing from AI DJ pt1
             || newPlaying.Title == "Welcome") // Is playing from AI DJ pt2
         {
             SetNotification(string.Empty);
@@ -125,7 +125,7 @@ public class OscMedia {
 
     private static string MediaAlbumVerb { // Playing "songname" by "artist" xyz "album"
         get => _mediaAlbumVerb;
-        set => _mediaAlbumVerb = value.Length > 0 ? value : "on";
+        set => _mediaAlbumVerb = value.Length > 0 ? value : "from";
     }
 
     private static string _mediaAlbumVerb = "on";

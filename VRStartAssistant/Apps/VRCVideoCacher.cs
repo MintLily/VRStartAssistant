@@ -6,12 +6,14 @@ namespace VRStartAssistant.Apps;
 public class VRCVideoCacher {
     public VRCVideoCacher() => Logger.Information("Setting up module :: {Description}", "Starts VRCVideoCacher");
     private static readonly ILogger Logger = Log.ForContext(typeof(VRCVideoCacher));
-    public static bool FailedToStart;
+    public static bool IsRunning;
 
     public static async Task Start() {
+        if (IsRunning) return;
         if (!Program.ConfigurationInstance.Base.RunVrcVideoCacher) return;
         try {
             Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcvideocacher");
+            IsRunning = true;
             if (Processes.VrcVideoCacher != null) {
                 Logger.Information("VRCVideoCacher is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcVideoCacher.Id);
                 return;
@@ -28,6 +30,7 @@ public class VRCVideoCacher {
         });
         await Task.Delay(TimeSpan.FromSeconds(1));
         Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcvideocacher");
+        IsRunning = true;
     }
     
     public static void Exit() {

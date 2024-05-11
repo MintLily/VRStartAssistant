@@ -6,13 +6,16 @@ namespace VRStartAssistant.Apps;
 public class HOSCY {
     public HOSCY() => Logger.Information("Setting up module :: {Description}", "Various OSC Things for VRChat");
     private static readonly ILogger Logger = Log.ForContext(typeof(HOSCY));
+    public static bool IsRunning;
     
     public static async Task Start() {
+        if (IsRunning) return;
         if (!Program.ConfigurationInstance.Base.RunHOSCY) return;
         try {
             Processes.HOSCY = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "HOSCY");
             if (Processes.HOSCY != null) {
                 Logger.Information("HOSCY is {0} with process ID {1}; not re-launching.", "already running", Processes.HOSCY.Id);
+                IsRunning = true;
                 return;
             }
         }
@@ -29,6 +32,7 @@ public class HOSCY {
             });
             await Task.Delay(TimeSpan.FromSeconds(1));
             Processes.HOSCY = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "HOSCY");
+            IsRunning = true;
         }
         catch (Exception ex) {
             Logger.Error(ex, "Failed to start HOSCY");

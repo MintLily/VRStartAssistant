@@ -6,12 +6,15 @@ namespace VRStartAssistant.Apps;
 public class VRCX {
     public VRCX() => Logger.Information("Setting up module :: {Description}", "Starts VRCX");
     private static readonly ILogger Logger = Log.ForContext(typeof(VRCX));
+    public static bool IsRunning;
 
     public static void Start() {
+        if (IsRunning) return;
         try {
             Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.Contains("vrcx", StringComparison.CurrentCultureIgnoreCase)).ToList();
             if (Processes.VrcxProcesses.Count != 0) {
                 Logger.Information("VRCX is {0} with process ID {1}; not re-launching.", "already running", Processes.VrcxProcesses.First().Id);
+                IsRunning = true;
                 return;
             }
         }
@@ -25,7 +28,8 @@ public class VRCX {
         //     UseShellExecute = false,
         // });
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VRCX", "VRCX.exe"));
-        GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore();
+        IsRunning = true;
+        GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore().RunWithoutAwait();
     }
     
     public static void Exit() {
@@ -37,7 +41,7 @@ public class VRCX {
         }
     }
     
-    private static async void GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore() {
+    private static async Task GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore() {
         await Task.Delay(TimeSpan.FromSeconds(30));
         Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.Contains("vrcx", StringComparison.CurrentCultureIgnoreCase)).ToList();
         Logger.Debug("Got VRCX Processes: {0}", Processes.VrcxProcesses.Count);

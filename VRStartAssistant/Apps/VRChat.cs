@@ -7,12 +7,15 @@ namespace VRStartAssistant.Apps;
 public class VRChat {
     public VRChat() => Logger.Information("Setting up module :: {Description}", "Starts and Minimizes VRChat");
     private static readonly ILogger Logger = Log.ForContext(typeof(VRChat));
+    public static bool IsRunning;
 
     public static async Task Start() {
+        if (IsRunning) return;
         Logger.Information("Starting VRChat...");
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steam.exe"), "steam://rungameid/438100");
+        IsRunning = true;
         await Task.Delay(TimeSpan.FromSeconds(5));
-        await AudioSwitch.Start();
+        AudioSwitch.Start();
         Logger.Information("Waiting 15 seconds for VRChat to fully start...");
         await Task.Delay(TimeSpan.FromSeconds(15));
         
@@ -28,7 +31,6 @@ public class VRChat {
         }
         catch (Exception ex) {
             Logger.Error(ex, "Failed to start VRCVideoCacher");
-            VRCVideoCacher.FailedToStart = true;
         }
     }
 }

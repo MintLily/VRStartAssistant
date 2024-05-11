@@ -18,10 +18,10 @@ public class Processes {
     public static List<Process>? SecretApp1;
 
     /* External Processes */
-    public static List<Process>? WindowsTerminal;
+    // public static List<Process>? WindowsTerminal;
 
     public static async Task GetOtherProcesses() {
         await Task.Delay(TimeSpan.FromSeconds(8));
-        WindowsTerminal = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("WindowsTerminal")).ToList();
+        // WindowsTerminal = Process.GetProcesses().Where(p => p.ProcessName.ToLower().Contains("WindowsTerminal")).ToList();
     }
 }
