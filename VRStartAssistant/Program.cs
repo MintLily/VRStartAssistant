@@ -1,4 +1,4 @@
-using Serilog;
+﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Templates;
@@ -10,7 +10,7 @@ namespace VRStartAssistant;
 public static class Vars {
     public const string AppName = "VRStartAssistant";
     public const string WindowsTitle = "Automate VR Startup Things";
-    public const string AppVersion = "1.11.0";
+    public const string AppVersion = "1.12.0";
     public const int TargetConfigVersion = 8;
     internal static readonly string? BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents", "Visual Studio Projects", "VROnStartAssistant", "Build");
 #if DEBUG
