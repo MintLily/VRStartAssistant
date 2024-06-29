@@ -26,7 +26,8 @@ public class VRCVideoCacher {
             WorkingDirectory = Path.Combine(Vars.BaseDir, "extras", "VRCVideoCacher"),
             FileName = Path.Combine(Vars.BaseDir, "extras", "VRCVideoCacher", "VRCVideoCacher.exe"),
             CreateNoWindow = false,
-            UseShellExecute = false
+            WindowStyle = ProcessWindowStyle.Minimized,
+            UseShellExecute = true
         });
         await Task.Delay(TimeSpan.FromSeconds(1));
         Processes.VrcVideoCacher = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "vrcvideocacher");

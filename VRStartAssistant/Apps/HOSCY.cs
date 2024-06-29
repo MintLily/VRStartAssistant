@@ -28,7 +28,8 @@ public class HOSCY {
                 WorkingDirectory = Path.Combine(Vars.BaseDir, "extras", "HOSCY"),
                 FileName = Path.Combine(Vars.BaseDir, "extras", "HOSCY VRChat Companion", "Hoscy.exe"),
                 CreateNoWindow = false,
-                UseShellExecute = false
+                WindowStyle = ProcessWindowStyle.Minimized,
+                UseShellExecute = true
             });
             await Task.Delay(TimeSpan.FromSeconds(1));
             Processes.HOSCY = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "HOSCY");

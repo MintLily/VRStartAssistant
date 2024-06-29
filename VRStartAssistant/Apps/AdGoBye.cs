@@ -28,7 +28,8 @@ public class AdGoBye {
                 WorkingDirectory = Path.Combine(Vars.BaseDir, "extras", "AGB"),
                 FileName = Path.Combine(Vars.BaseDir, "extras", "AGB", "AdGoBye.exe"),
                 CreateNoWindow = false,
-                UseShellExecute = false
+                WindowStyle = ProcessWindowStyle.Minimized,
+                UseShellExecute = true
             });
             await Task.Delay(TimeSpan.FromSeconds(1));
             Processes.AdGoBye = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "adgobye");
