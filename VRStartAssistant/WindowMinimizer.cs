@@ -19,7 +19,7 @@ public class WindowMinimizer {
     private static extern IntPtr GetConsoleWindow();
     
     public static async Task DelayedMinimize() {
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        await Task.Delay(TimeSpan.FromSeconds(Vars.IsDebug ? 5 : 30));
         
         ShowWindow(GetConsoleWindow(), 0); // Hide this console window
 
@@ -29,27 +29,5 @@ public class WindowMinimizer {
             OscMedia.StartMediaDetection();
             // OscMedia.StartOscMediaThread();
         }
-        
-        // if (Processes.WindowsTerminal is not null) {
-        //     Logger.Information("Minimizing Windows Terminal...");
-        //     foreach (var terms in Processes.WindowsTerminal) {
-        //         ShowWindow(terms.MainWindowHandle, 6);
-        //     }
-        // }
-        
-        if (Processes.HOSCY is not null) {
-            Logger.Information("Minimizing HOSCY...");
-            ShowWindow(Processes.HOSCY.MainWindowHandle, 6);
-        }
-        
-        // if (Program.ConfigurationInstance.Base.RunVrcVideoCacher && Processes.VrcVideoCacher is not null) {
-        //     Logger.Information("Minimizing VRCVideoCacher...");
-        //     ShowWindow(Processes.VrcVideoCacher.MainWindowHandle, 6);
-        // }
-        //
-        // if (Program.ConfigurationInstance.Base.RunAdGoBye && Processes.AdGoBye is not null) {
-        //     Logger.Information("Minimizing AdGoBye...");
-        //     ShowWindow(Processes.AdGoBye.MainWindowHandle, 6);
-        // }
     }
 }

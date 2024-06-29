@@ -3,7 +3,6 @@ using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
 using VRStartAssistant.Apps;
-using VRStartAssistant.Configuration.Classes;
 using XSNotifications;
 using XSNotifications.Enum;
 

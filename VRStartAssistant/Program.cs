@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Templates;
@@ -46,18 +46,12 @@ public abstract class Program {
         ConfigurationInstance = new Config();
         ConfigurationInstance.Load();
 
+        // used for debugging audio switch code
+        // AudioSwitch.Start(true);
+        // return;
+
         await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
         await WindowsXSO.StartAsync(); // Start XSO & everything else
-        // AudioSwitch.Start(true);
-        // try {
-        //     await WindowsXSO.StartAsync();
-        // }
-        // catch (Exception ex) {
-        //     Log.Error("WindowsXSO has failed: \n{0}", ex.Message + "\n" + ex.StackTrace);
-        // }
-        // Log.Debug("Press any key to exit...");
-        // Console.ReadKey();
-        // Environment.Exit(0);
     }
 
     public static void ChangeConsoleTitle(string extraData = "") => Console.Title = Vars.WindowsTitle + " v" + Vars.AppVersion + (Vars.IsDebug ? " - DEBUG" : "") + (string.IsNullOrEmpty(extraData) ? "" : $" - {extraData}");
