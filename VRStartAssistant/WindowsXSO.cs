@@ -83,6 +83,7 @@ public class WindowsXSO {
                 Secret.SecretApp1.Exit();
                 HOSCY.Exit();
                 HeartrateMonitor.Exit();
+                AudioSwitch.SwitchBack();
             }
             
             // if (Processes.VrChatProcess is { HasExited: true }) {

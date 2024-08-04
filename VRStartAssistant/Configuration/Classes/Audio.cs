@@ -1,10 +1,11 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace VRStartAssistant.Configuration.Classes; 
 
 public class Audio {
     public int DefaultAudioDevice { get; init; } = 0;
     public List<AudioDevices> AudioDevices { get; init; } = [];
+    public int SwitchBackAudioDevice { get; init; } = 0;
 }
 
 public class AudioDevices {

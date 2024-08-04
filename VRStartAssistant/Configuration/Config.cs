@@ -15,25 +15,8 @@ public class Config {
             ConfigVersion = Vars.TargetConfigVersion,
             Audio = new Audio {
                 DefaultAudioDevice = 0,
-                AudioDevices = [
-                    new AudioDevices {
-                        Id = 0,
-                        Name = "Index USB (Audio Adapter)",
-                        Guid = "1f6321e0-59f8-4a24-933c-6c3918f6262a"
-                    },
-
-                    new AudioDevices {
-                        Id = 1,
-                        Name = "VR P10",
-                        Guid = "feef26a6-db77-42e9-837d-4152d82fdac6"
-                    },
-
-                    new AudioDevices {
-                        Id = 2,
-                        Name = "JBL Charge 4",
-                        Guid = "f103d47f-c0c7-4e07-87a0-309c10c9abb0"
-                    }
-                ]
+                AudioDevices = [],
+                SwitchBackAudioDevice = 1
             },
             WinXSO = new WinXSO {
                 Settings = new Settings {

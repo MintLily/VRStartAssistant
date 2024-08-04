@@ -29,4 +29,17 @@ public class AudioSwitch {
             Logger.Error(e, "Failed to set default audio device");
         }
     }
+    
+    public static void SwitchBack() {
+        try {
+            var controller = new CoreAudioController();
+            Logger.Information("Attempting to set default audio device to {Device}...", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Name);
+            var device = controller.GetDeviceAsync(Guid.Parse(Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Guid)).GetAwaiter().GetResult();
+            controller.DefaultPlaybackDevice = device;
+            Logger.Information("Set audio device to {0}", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Name);
+        }
+        catch (Exception e) {
+            Logger.Error(e, "Failed to set default audio device");
+        }
+    }
 }
