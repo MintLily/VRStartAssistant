@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -60,7 +60,8 @@ public class Config {
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
             RunAdGoBye = false,
-            RunHOSCY = false
+            RunHOSCY = false,
+            RunHeartRateOnStream = false,
         };
         
         bool update;

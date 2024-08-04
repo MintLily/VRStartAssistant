@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
@@ -64,6 +64,7 @@ public class WindowsXSO {
             await Secret.SecretApp1.Start(); // Start SecretApp1
             await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
             await HOSCY.Start(); // Start HOSCY
+            await HeartrateMonitor.Start(); // Start HeartRateOnStream-OSC
             await Processes.GetOtherProcesses(); // Get Other Processes
             await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
         }
@@ -81,6 +82,7 @@ public class WindowsXSO {
                 VRCX.Exit();
                 Secret.SecretApp1.Exit();
                 HOSCY.Exit();
+                HeartrateMonitor.Exit();
             }
             
             // if (Processes.VrChatProcess is { HasExited: true }) {

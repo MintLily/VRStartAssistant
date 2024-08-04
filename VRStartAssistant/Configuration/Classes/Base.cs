@@ -1,4 +1,4 @@
-﻿namespace VRStartAssistant.Configuration.Classes; 
+namespace VRStartAssistant.Configuration.Classes; 
 
 public class Base {
     public int ConfigVersion { get; set; } = Vars.TargetConfigVersion;
@@ -10,4 +10,5 @@ public class Base {
     public bool RunVrcVideoCacher { get; init; } = false;
     public bool RunAdGoBye { get; init; } = false;
     public bool RunHOSCY { get; init; } = false;
+    public bool RunHeartRateOnStream { get; init; } = false;
 }

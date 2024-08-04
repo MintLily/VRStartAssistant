@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Serilog;
 
 namespace VRStartAssistant; 
@@ -14,6 +14,7 @@ public class Processes {
     public static Process? VrcVideoCacher;
     public static Process? AdGoBye;
     public static Process? HOSCY;
+    public static Process? HeartRateOnStream;
     /* Secret things */
     public static List<Process>? SecretApp1;
 
