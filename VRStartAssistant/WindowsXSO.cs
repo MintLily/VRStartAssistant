@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
@@ -125,7 +125,7 @@ public class WindowsXSO {
                     var timeout = CalculateTimeout(text);
                     var truncateText = height > 250f;
 
-                    if (text.ToLower().ContainsMultiple(".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".svg")) {
+                    if (text.ToLower().OrContainsMultiple(".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".svg")) {
                         text = $"[image: {text}]";
                     } else if (text.Length == 0) {
                         text = "[sent an embed of some sort]";

@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -39,7 +39,12 @@ public class Config {
                 LightBrightness = 0.0f,
                 LightColor = [0, 0, 0]
             },
-            ShowMediaStatus = false,
+            OscThings = new OscThings {
+                ShowMediaStatus = false,
+                CustomBlockWordsContains = [],
+                CustomBlockWordsEquals = [],
+                SecondToAutoHideChatBox = 2
+            },
             RunSecretApp1 = true,
             RunVrcVideoCacher = false,
             RunAdGoBye = false,

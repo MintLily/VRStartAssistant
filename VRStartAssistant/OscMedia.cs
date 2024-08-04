@@ -70,11 +70,14 @@ public class OscMedia {
         // Set notification empty if the current media is invalid
         if (newPlaying == null // No new playing
             || newPlaying.PlaybackType is not (MediaPlaybackType.Video or MediaPlaybackType.Music) // Not a video or music
-            || playbackInfo == null || playbackInfo.PlaybackStatus != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing // No status or its not playing
-            || newPlaying.Title == null || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
-            || newPlaying.Artist == "DJ" // Is playing from AI DJ pt1
-            || newPlaying.Title == "Welcome") // Is playing from AI DJ pt2
-        {
+            || playbackInfo == null || playbackInfo.PlaybackStatus != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing // No status or it is not playing
+            || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
+            || (newPlaying.Title == "Up next" && newPlaying.Artist == "DJ X") // Is playing from AI DJ X
+            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Title.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing contains a blocked word
+            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Artist.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing contains a blocked word
+            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Title.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing equals a blocked word
+            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Artist.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing equals a blocked word
+        ) {
             SetNotification(string.Empty);
             return;
         }
@@ -82,7 +85,7 @@ public class OscMedia {
         // Checking if the new media is the same media
         // Locked as it sometimes happens to come here multiple times concurrently
         lock (Lock) {
-            if (_nowPlaying != null) // We skip this check if there is now now playing
+            if (_nowPlaying != null) // We skip this check if there is now playing
                 if (newPlaying.Title.Equals(_nowPlaying.Title, StringComparison.OrdinalIgnoreCase) && newPlaying.Artist.Equals(_nowPlaying.Artist) && (DateTime.Now - _mediaLastChanged).TotalSeconds < 5)
                     return;
         }
@@ -90,7 +93,7 @@ public class OscMedia {
         _nowPlaying = newPlaying;
         _mediaLastChanged = DateTime.Now;
 
-        if (Program.ConfigurationInstance.Base.ShowMediaStatus) {
+        if (Program.ConfigurationInstance.Base.OscThings.ShowMediaStatus) {
             var playing = CreateCurrentMediaString();
 
             if (string.IsNullOrWhiteSpace(playing)) {
@@ -375,7 +378,7 @@ public class OscMedia {
     private static async Task SendOscMessage(string address, params object[] args) {
         var msg = new OscMessage(address, args);
         await _oscSender.SendAsync(msg);
-        await Task.Delay(TimeSpan.FromSeconds(2));
+        await Task.Delay(TimeSpan.FromSeconds(Program.ConfigurationInstance.Base.OscThings.SecondToAutoHideChatBox));
         await _oscSender.SendAsync(new OscMessage(AddressGameTextbox, string.Empty));
     }
 }
