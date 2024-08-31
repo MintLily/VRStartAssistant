@@ -65,6 +65,7 @@ public class WindowsXSO {
             await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
             await HOSCY.Start(); // Start HOSCY
             await HeartrateMonitor.Start(); // Start HeartRateOnStream-OSC
+            await OSCLeash.Start(); // Start OSCLeash
             await Processes.GetOtherProcesses(); // Get Other Processes
             await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
         }
@@ -83,6 +84,7 @@ public class WindowsXSO {
                 Secret.SecretApp1.Exit();
                 HOSCY.Exit();
                 HeartrateMonitor.Exit();
+                OSCLeash.Exit();
                 AudioSwitch.SwitchBack();
             }
             

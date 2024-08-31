@@ -11,4 +11,5 @@ public class Base {
     public bool RunAdGoBye { get; init; } = false;
     public bool RunHOSCY { get; init; } = false;
     public bool RunHeartRateOnStream { get; init; } = false;
+    public bool RunOscLeash { get; init; } = false;
 }

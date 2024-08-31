@@ -50,6 +50,7 @@ public class Config {
             RunAdGoBye = false,
             RunHOSCY = false,
             RunHeartRateOnStream = false,
+            RunOscLeash = false
         };
         
         bool update;
