@@ -27,7 +27,10 @@ public class OscMedia {
     }
 
     internal static void StartMediaDetection() {
-        _oscSender = new OscDuplex(new IPEndPoint(IPAddress.Loopback, 9001), new IPEndPoint(IPAddress.Loopback, 9000));
+        _oscSender = new OscDuplex(
+            new IPEndPoint(IPAddress.Loopback, Program.ConfigurationInstance.Base.OscThings.ListeningPort),
+            new IPEndPoint(IPAddress.Loopback, Program.ConfigurationInstance.Base.OscThings.SendingPort)
+            );
         Logger.Information("OSC Sender Started");
         StartMediaDetectionInternal().RunWithoutAwait();
     }

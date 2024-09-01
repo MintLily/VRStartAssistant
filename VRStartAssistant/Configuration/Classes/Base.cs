@@ -12,4 +12,5 @@ public class Base {
     public bool RunHOSCY { get; init; } = false;
     public bool RunHeartRateOnStream { get; init; } = false;
     public bool RunOscLeash { get; init; } = false;
+    public bool RunVRChatOSCRouter { get; init; } = false;
 }

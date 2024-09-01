@@ -60,6 +60,7 @@ public class WindowsXSO {
         Program.ChangeConsoleTitle();
         try {
             VRCX.Start(); // Start VRCX
+            await VRChatOscRouter.Start(); // Start VRChat OSC Router
             await AdGoBye.Start(); // Start AdGoBye
             await Secret.SecretApp1.Start(); // Start SecretApp1
             await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
@@ -85,6 +86,7 @@ public class WindowsXSO {
                 HOSCY.Exit();
                 HeartrateMonitor.Exit();
                 OSCLeash.Exit();
+                VRChatOscRouter.Exit();
                 AudioSwitch.SwitchBack();
             }
             

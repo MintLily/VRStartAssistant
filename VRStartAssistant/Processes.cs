@@ -16,6 +16,7 @@ public class Processes {
     public static Process? HOSCY;
     public static Process? HeartRateOnStream;
     public static Process? OSCLeash;
+    public static Process? Vor;
     /* Secret things */
     public static List<Process>? SecretApp1;
 

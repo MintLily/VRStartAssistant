@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -40,6 +40,8 @@ public class Config {
                 LightColor = [0, 0, 0]
             },
             OscThings = new OscThings {
+                ListeningPort = 9001,
+                SendingPort = 9000,
                 ShowMediaStatus = false,
                 CustomBlockWordsContains = [],
                 CustomBlockWordsEquals = [],
