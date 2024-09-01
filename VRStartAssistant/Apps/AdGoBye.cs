@@ -47,4 +47,10 @@ public class AdGoBye {
         Processes.AdGoBye.CloseMainWindow();
         Processes.AdGoBye.Kill();
     }
+
+    public static void ValidatePath() {
+        if (!Directory.Exists(Path.Combine(Vars.BaseDir, "extras", "AGB")))
+            return;
+        Logger.Information("AGB path is valid.");
+    }
 }

@@ -46,4 +46,10 @@ public class HeartrateMonitor {
         Processes.HeartRateOnStream.CloseMainWindow();
         Processes.HeartRateOnStream.Kill();
     }
+    
+    public static void ValidatePath() {
+        if (!Directory.Exists(Path.Combine(Vars.BaseDir, "extras", "HROS")))
+            return;
+        Logger.Information("HeartRateOnStream-OSC path is valid.");
+    }
 }

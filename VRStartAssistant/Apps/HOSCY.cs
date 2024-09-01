@@ -47,4 +47,10 @@ public class HOSCY {
         Processes.HOSCY.CloseMainWindow();
         Processes.HOSCY.Kill();
     }
+    
+    public static void ValidatePath() {
+        if (!Directory.Exists(Path.Combine(Vars.BaseDir, "extras", "HOSCY")))
+            return;
+        Logger.Information("HOSCY path is valid.");
+    }
 }

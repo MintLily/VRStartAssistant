@@ -46,4 +46,10 @@ public class OSCLeash {
         Processes.OSCLeash.CloseMainWindow();
         Processes.OSCLeash.Kill();
     }
+    
+    public static void ValidatePath() {
+        if (!Directory.Exists(Path.Combine(Vars.BaseDir, "extras", "OSCLeash")))
+            return;
+        Logger.Information("OSCLeash path is valid.");
+    }
 }

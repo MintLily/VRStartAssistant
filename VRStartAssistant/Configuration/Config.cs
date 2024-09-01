@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -78,4 +78,6 @@ public class Config {
     }
     
     // public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
+    
+    public string ToJson() => JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true });
 }

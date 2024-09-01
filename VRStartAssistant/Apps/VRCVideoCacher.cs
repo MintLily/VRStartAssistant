@@ -41,4 +41,10 @@ public class VRCVideoCacher {
         Processes.VrcVideoCacher.CloseMainWindow();
         Processes.VrcVideoCacher.Kill();
     }
+    
+    public static void ValidatePath() {
+        if (!Directory.Exists(Path.Combine(Vars.BaseDir, "extras", "VRCVideoCacher")))
+            return;
+        Logger.Information("VRCVideoCacher path is valid.");
+    }
 }

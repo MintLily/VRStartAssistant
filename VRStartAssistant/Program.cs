@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Templates;
@@ -48,6 +48,10 @@ public abstract class Program {
 
         // used for debugging audio switch code
         // AudioSwitch.Start(true);
+        // ValidateAppPaths.Go();
+        // Console.WriteLine("\n");
+        // Log.Information("Configuration:\n{0}", ConfigurationInstance.ToJson());
+        // Console.ReadLine();
         // return;
 
         await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
