@@ -25,8 +25,8 @@ public class VRChatOscRouter {
         try {
             Logger.Information("Starting VRChat OSC Router...");
             Process.Start(new ProcessStartInfo {
-                WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vor", "bin", "vor.exe"),
-                FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vor", "bin"),
+                WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vor", "bin"),
+                FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vor", "bin", "vor.exe"),
                 Arguments = "--enable-on-start / -e",
                 CreateNoWindow = false,
                 WindowStyle = ProcessWindowStyle.Minimized,
