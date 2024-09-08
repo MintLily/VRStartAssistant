@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using VRStartAssistant.Features;
+using VRStartAssistant.Features.Integrations;
 
 namespace VRStartAssistant.Apps; 
 
@@ -52,7 +54,7 @@ public class SteamVR {
         //     WindowsXSO.NotificationThread.Abort();
         // WindowsXSO.run = false;
         OscMedia.StopMediaDetection();
-        await Integrations.HASS.ToggleBaseStations(true);
+        await HASS.ToggleBaseStations(true);
         Process.GetCurrentProcess().Kill();
         Environment.Exit(0);
     }

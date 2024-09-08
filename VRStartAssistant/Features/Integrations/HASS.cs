@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using Serilog;
 
-namespace VRStartAssistant.Integrations;
+namespace VRStartAssistant.Features.Integrations;
 
 public class HASS {
     public HASS() => Logger.Information("Setting up module :: {Description}", "Controls Home Assistant devices");

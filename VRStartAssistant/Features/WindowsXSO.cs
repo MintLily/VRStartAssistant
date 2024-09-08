@@ -2,11 +2,11 @@
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using Serilog;
-using VRStartAssistant.Apps;
+using VRStartAssistant.Utils;
 using XSNotifications;
 using XSNotifications.Enum;
 
-namespace VRStartAssistant; 
+namespace VRStartAssistant.Features; 
 
 public class WindowsXSO {
     public WindowsXSO() => Logger.Information("Setting up module :: {Description}", "Windows to XSOverlay Notification Relay");
@@ -52,50 +52,18 @@ public class WindowsXSO {
         if (isInRestartMessage)
             Process.GetCurrentProcess().Kill();
         
-        var config = Program.ConfigurationInstance.Base!.WinXSO.Settings;
+        var config = Program.ConfigurationInstance!.Base!.WinXSO.Settings;
         // Logger.Information("Whitelist target applications: {0}", string.Join(", ", TargetApplicationNames!));
         
         Logger.Information($"Starting notification listener in {(config.Whitelist ? "Whitelist" : "Blacklist")} mode...");
         Logger.Information($"{(config.Whitelist ? "Allowing" : "Blocking")} target applications: " + "{0}", string.Join(", ", config.Applications!));
         Program.ChangeConsoleTitle();
-        try {
-            VRCX.Start(); // Start VRCX
-            await VRChatOscRouter.Start(); // Start VRChat OSC Router
-            await AdGoBye.Start(); // Start AdGoBye
-            await Secret.SecretApp1.Start(); // Start SecretApp1
-            await SteamVR.StartAsync(); // Start SteamVR, Start VRChat, Switch Audio, Custom Media OSC chatbox for VRChat
-            await HOSCY.Start(); // Start HOSCY
-            await HeartrateMonitor.Start(); // Start HeartRateOnStream-OSC
-            await OSCLeash.Start(); // Start OSCLeash
-            await Processes.GetOtherProcesses(); // Get Other Processes
-            await WindowMinimizer.DelayedMinimize(); // Minimize VRChat, VRCVideoCacher, AdGoBye, HOSCY
-        }
-        catch (Exception ex) {
-            Log.Error("Something in the Application Startup has failed: \n{0}", ex.Message + "\n" + ex.StackTrace);
-        }
+        await Program.StartApplications();
         
         Logger.Information("Starting WindowsXSO Notification Relay...");
         while (true) { // Keep the program looping
-            // Check if SteamVR is still running
-            if (Processes.SteamVrProcess is { HasExited: true }) {
-                SteamVR.Exit().RunWithoutAwait();
-                VRCVideoCacher.Exit();
-                AdGoBye.Exit();
-                VRCX.Exit();
-                Secret.SecretApp1.Exit();
-                HOSCY.Exit();
-                HeartrateMonitor.Exit();
-                OSCLeash.Exit();
-                VRChatOscRouter.Exit();
-                AudioSwitch.SwitchBack();
-            }
-            
-            // if (Processes.VrChatProcess is { HasExited: true }) {
-            //     VRCVideoCacher.Exit();
-            //     AdGoBye.Exit();
-            //     VRCX.Exit();
-            //     Secret.SecretApp1.Exit();
-            // }
+            // Check if SteamVR is still running, if so, kill other applications
+            Program.CheckForExitedProcess();
             
             IReadOnlyList<UserNotification> readOnlyListOfNotifications = _listener.GetNotificationsAsync(NotificationKinds.Toast).AsTask().Result;
             

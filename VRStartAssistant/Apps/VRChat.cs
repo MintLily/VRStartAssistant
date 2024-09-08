@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using VRStartAssistant.Features;
 using VRStartAssistant.Secret;
 
 namespace VRStartAssistant.Apps; 

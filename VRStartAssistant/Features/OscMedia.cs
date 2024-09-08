@@ -4,8 +4,9 @@ using Windows.Media;
 using Windows.Media.Control;
 using LucHeart.CoreOSC;
 using Serilog;
+using VRStartAssistant.Utils;
 
-namespace VRStartAssistant;
+namespace VRStartAssistant.Features;
 // A lot of this came from https://github.com/PaciStardust/HOSCY :: Paci's Code Should follow their GPL-2.0 License
 // as well as my girlfriend's private project
 
@@ -220,14 +221,14 @@ public class OscMedia {
 
     private static int MaxLength { // Max length of string displayed before cutoff
         get => _maxLength;
-        set => _maxLength = Utils.MinMax(value, 50, 130);
+        set => _maxLength = SimpleUtils.MinMax(value, 50, 130);
     }
 
     private static int _maxLength = 130;
 
     private static int TimeoutMultiplier { // Add x milliseconds to timeout per 20 characters
         get => _timeoutMultiplier;
-        set => _timeoutMultiplier = Utils.MinMax(value, 250, 10000);
+        set => _timeoutMultiplier = SimpleUtils.MinMax(value, 250, 10000);
     }
 
     private static int _timeoutMultiplier = 1250;
