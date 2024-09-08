@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using VRStartAssistant.Utils;
 
 namespace VRStartAssistant.Apps;
 
@@ -12,9 +13,9 @@ public class OSCLeash {
         if (IsRunning) return;
         if (!Program.ConfigurationInstance.Base.RunOscLeash) return;
         try {
-            Processes.OSCLeash = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "OSCLeash");
-            if (Processes.OSCLeash != null) {
-                Logger.Information("OSCLeash is {0} with process ID {1}; not re-launching.", "already running", Processes.OSCLeash.Id);
+            Processes.OSCLeash = Process.GetProcesses().Where(p => p.ProcessName.Contains("OSCLeash", StringComparison.CurrentCultureIgnoreCase)).ToList();
+            if (Processes.OSCLeash.Count != 0) {
+                Logger.Information("OSCLeash is {0} with process ID {1}; not re-launching.", "already running", Processes.OSCLeash.First().Id);
                 IsRunning = true;
                 return;
             }
@@ -30,21 +31,27 @@ public class OSCLeash {
                 WindowStyle = ProcessWindowStyle.Minimized,
                 UseShellExecute = true
             });
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            Processes.OSCLeash = Process.GetProcesses().ToList().FirstOrDefault(p => p?.ProcessName.ToLower() == "OSCLeash");
-            IsRunning = true;
+            GetOscLeashProcesses().RunWithoutAwait();
         }
         catch (Exception ex) {
             Logger.Error(ex, "Failed to start OSCLeash");
         }
     }
     
+    private static async Task GetOscLeashProcesses() {
+        await Task.Delay(TimeSpan.FromSeconds(30));
+        Processes.OSCLeash = Process.GetProcesses().Where(p => p.ProcessName.Contains("OSCLeash", StringComparison.CurrentCultureIgnoreCase)).ToList();
+        Logger.Debug("Got OSCLeash Processes: {0}", Processes.OSCLeash.Count);
+    }
+    
     public static void Exit() {
         if (!Program.ConfigurationInstance.Base.RunOscLeash) return;
-        if (Processes.OSCLeash == null) return;
+        if (Processes.OSCLeash.Count == 0) return;
         Logger.Information("Closing OSCLeash...");
-        Processes.OSCLeash.CloseMainWindow();
-        Processes.OSCLeash.Kill();
+        foreach (var oscLeash in Processes.OSCLeash) {
+            oscLeash.CloseMainWindow();
+            oscLeash.Kill();
+        }
     }
     
     public static void ValidatePath() {

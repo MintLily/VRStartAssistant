@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Serilog;
 
-namespace VRStartAssistant; 
+namespace VRStartAssistant.Features; 
 
 public class WindowMinimizer {
     public WindowMinimizer() => Logger.Information("Setting up module :: {Description}", "Functions to minimize windows");
@@ -28,6 +28,11 @@ public class WindowMinimizer {
             ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
             OscMedia.StartMediaDetection();
             // OscMedia.StartOscMediaThread();
+        }
+        
+        foreach (var oscLeash in Processes.OSCLeash) {
+            Logger.Information("Minimizing OSCLeash...");
+            ShowWindow(oscLeash.MainWindowHandle, 6);
         }
     }
 }
