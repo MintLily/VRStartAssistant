@@ -1,14 +1,15 @@
 ﻿using AudioSwitcher.AudioApi;
-using Serilog;
 using AudioSwitcher.AudioApi.CoreAudio;
+using Serilog;
 
-namespace VRStartAssistant;
+namespace VRStartAssistant.Features;
 
 public class AudioSwitch {
     public AudioSwitch() => Logger.Information("Setting up module :: {Description}", "Automatically switches to specific audio devices");
     private static readonly ILogger Logger = Log.ForContext(typeof(AudioSwitch));
 
     public static void Start(bool showDebug = false) {
+        var conf = Program.ConfigurationInstance!.Base!.Audio;
         try {
             var controller = new CoreAudioController();
             if (showDebug) {
@@ -20,10 +21,10 @@ public class AudioSwitch {
                 Logger.Information("Is Running Debug ... Not changing audio device");
                 return;
             }
-            Logger.Information("Attempting to set default audio device to {Device}...", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Name);
-            var device = controller.GetDeviceAsync(Guid.Parse(Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Guid)).GetAwaiter().GetResult();
+            Logger.Information("Attempting to set default audio device to {Device}...", conf.AudioDevices[conf.DefaultAudioDevice].Name);
+            var device = controller.GetDeviceAsync(Guid.Parse(conf.AudioDevices[conf.DefaultAudioDevice].Guid)).GetAwaiter().GetResult();
             controller.DefaultPlaybackDevice = device;
-            Logger.Information("Set audio device to {0}", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.DefaultAudioDevice].Name);
+            Logger.Information("Set audio device to {0}", conf.AudioDevices[conf.DefaultAudioDevice].Name);
         }
         catch (Exception e) {
             Logger.Error(e, "Failed to set default audio device");
@@ -31,12 +32,17 @@ public class AudioSwitch {
     }
     
     public static void SwitchBack() {
+        var conf = Program.ConfigurationInstance!.Base!.Audio;
+        
+        if (conf.DefaultAudioDevice == conf.SwitchBackAudioDevice)
+            return;
+        
         try {
             var controller = new CoreAudioController();
-            Logger.Information("Attempting to set default audio device to {Device}...", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Name);
-            var device = controller.GetDeviceAsync(Guid.Parse(Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Guid)).GetAwaiter().GetResult();
+            Logger.Information("Attempting to set default audio device to {Device}...", conf.AudioDevices[conf.SwitchBackAudioDevice].Name);
+            var device = controller.GetDeviceAsync(Guid.Parse(conf.AudioDevices[conf.SwitchBackAudioDevice].Guid)).GetAwaiter().GetResult();
             controller.DefaultPlaybackDevice = device;
-            Logger.Information("Set audio device to {0}", Program.ConfigurationInstance.Base.Audio.AudioDevices[Program.ConfigurationInstance.Base.Audio.SwitchBackAudioDevice].Name);
+            Logger.Information("Set audio device to {0}", conf.AudioDevices[conf.SwitchBackAudioDevice].Name);
         }
         catch (Exception e) {
             Logger.Error(e, "Failed to set default audio device");
