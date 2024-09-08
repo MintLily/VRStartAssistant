@@ -1,6 +1,6 @@
 ﻿using VRStartAssistant.Apps;
 
-namespace VRStartAssistant;
+namespace VRStartAssistant.Utils;
 
 public class ValidateAppPaths {
     public static void Go() {

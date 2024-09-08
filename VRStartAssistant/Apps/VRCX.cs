@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using VRStartAssistant.Utils;
 
 namespace VRStartAssistant.Apps; 
 
@@ -21,15 +22,9 @@ public class VRCX {
         catch {/*ignore*/}
         
         Logger.Information("Starting VRCX...");
-        // Process.Start(new ProcessStartInfo {
-        //     WorkingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCX"),
-        //     FileName = "VRCX.exe",
-        //     Arguments = "",
-        //     UseShellExecute = false,
-        // });
         Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VRCX", "VRCX.exe"));
         IsRunning = true;
-        GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore().RunWithoutAwait();
+        GetVrcxProcesses().RunWithoutAwait();
     }
     
     public static void Exit() {
@@ -41,7 +36,7 @@ public class VRCX {
         }
     }
     
-    private static async Task GetVrcxProcessesTheLazyWayEvenThoughAsyncVoidsAreVeryBadToUseButIDoNotCareAnymore() {
+    private static async Task GetVrcxProcesses() {
         await Task.Delay(TimeSpan.FromSeconds(30));
         Processes.VrcxProcesses = Process.GetProcesses().Where(p => p.ProcessName.Contains("vrcx", StringComparison.CurrentCultureIgnoreCase)).ToList();
         Logger.Debug("Got VRCX Processes: {0}", Processes.VrcxProcesses.Count);

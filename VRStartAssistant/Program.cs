@@ -6,6 +6,7 @@ using Serilog.Templates.Themes;
 using VRStartAssistant.Apps;
 using VRStartAssistant.Configuration;
 using VRStartAssistant.Features;
+using VRStartAssistant.Features.Integrations;
 using VRStartAssistant.Utils;
 
 namespace VRStartAssistant;
@@ -57,7 +58,7 @@ public abstract class Program {
         // Console.ReadLine();
         // return;
 
-        await Integrations.HASS.ToggleBaseStations(); // Turns on Base Stations
+        await HASS.ToggleBaseStations(); // Turns on Base Stations
         await WindowsXSO.StartAsync(); // Start XSO & everything else
     }
 

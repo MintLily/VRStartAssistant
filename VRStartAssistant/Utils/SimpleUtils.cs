@@ -1,6 +1,6 @@
-﻿namespace VRStartAssistant;
+﻿namespace VRStartAssistant.Utils;
 
-public static class Utils {
+public static class SimpleUtils {
     /// <summary>
     /// Runs an async Task without awaiting
     /// </summary>

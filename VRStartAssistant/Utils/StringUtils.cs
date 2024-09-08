@@ -1,4 +1,4 @@
-﻿namespace VRStartAssistant;
+﻿namespace VRStartAssistant.Utils;
 
 public static class StringUtils {
     /// <summary>
