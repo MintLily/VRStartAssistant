@@ -4,6 +4,7 @@ namespace VRStartAssistant.Configuration.Classes;
 
 public class Audio {
     public int DefaultAudioDevice { get; init; } = 0;
+    public bool ApplyAllDevicesToList { get; set; } = false;
     public List<AudioDevices> AudioDevices { get; init; } = [];
     public int SwitchBackAudioDevice { get; init; } = 0;
 }

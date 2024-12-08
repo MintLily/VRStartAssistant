@@ -4,10 +4,10 @@
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>latestmajor</LangVersion>
         <Company>Minty Labs</Company>
-        <AssemblyVersion>1.16.2</AssemblyVersion>
-        <FileVersion>1.16.2</FileVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <FileVersion>2.0.0</FileVersion>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>VRSA_798nt23rx867tb32r7t98n321rxey7tn98m213ex321odi9n7tx.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
@@ -15,27 +15,29 @@
         <Authors>MintLily</Authors>
         <Copyright>Minty Labs</Copyright>
         <Description>Automate VR Startup Things</Description>
-        <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-        <Version>1.16.2.1207</Version>
+        <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+        <Version>2.0.0.1207</Version>
         <PackageProjectUrl>https://github.com/MintLily/VRStartAssistant</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/MintLily/VRStartAssistant/main/LICENSE</PackageLicenseUrl>
-        <ApplicationIcon>..\Resources\icon.ico</ApplicationIcon>
+        <ApplicationIcon>..\Resources\favicon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="3.0.3" />
       <PackageReference Include="LucHeart.CoreOSC" Version="1.4.0" />
-      <PackageReference Include="RestSharp" Version="111.4.1" />
-      <PackageReference Include="Serilog" Version="4.0.1" />
+      <PackageReference Include="RestSharp" Version="112.1.0" />
+      <PackageReference Include="Serilog" Version="4.2.0" />
       <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+      <PackageReference Include="System.CommandLine.NamingConventionBinder" Version="2.0.0-beta4.22272.1" />
       <PackageReference Include="XSNotifications" Version="0.1.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\Resources\icon.ico">
-        <Link>icon.ico</Link>
+      <None Include="..\Resources\favicon.ico">
+        <Link>favicon.ico</Link>
       </None>
     </ItemGroup>
 

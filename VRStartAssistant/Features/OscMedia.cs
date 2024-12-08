@@ -11,7 +11,7 @@ namespace VRStartAssistant.Features;
 // as well as my girlfriend's private project
 
 public class OscMedia {
-    private static readonly ILogger Logger = Log.ForContext(typeof(OscMedia));
+    private static readonly ILogger Logger = Log.ForContext<OscMedia>();
     private static GlobalSystemMediaTransportControlsSessionManager? _sessionManager;
     private static GlobalSystemMediaTransportControlsSession? _session;
     private static GlobalSystemMediaTransportControlsSessionMediaProperties? _nowPlaying;
@@ -28,9 +28,10 @@ public class OscMedia {
     }
 
     internal static void StartMediaDetection() {
+        var o = Program.ConfigurationInstance!.Base!.OscThings;
         _oscSender = new OscDuplex(
-            new IPEndPoint(IPAddress.Loopback, Program.ConfigurationInstance.Base.OscThings.ListeningPort),
-            new IPEndPoint(IPAddress.Loopback, Program.ConfigurationInstance.Base.OscThings.SendingPort)
+            new IPEndPoint(IPAddress.Loopback, o.ListeningPort),
+            new IPEndPoint(IPAddress.Loopback, o.SendingPort)
             );
         Logger.Information("OSC Sender Started");
         StartMediaDetectionInternal().RunWithoutAwait();
@@ -76,8 +77,9 @@ public class OscMedia {
             || newPlaying.PlaybackType is not (MediaPlaybackType.Video or MediaPlaybackType.Music) // Not a video or music
             || playbackInfo == null || playbackInfo.PlaybackStatus != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing // No status or it is not playing
             || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
-            || (newPlaying.Title == "Up next" && newPlaying.Artist == "DJ X") // Is playing from AI DJ X
-            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Title.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing contains a blocked word
+//          || newPlaying is { Title: "Up next", Artist: "DJ X" } // Is playing from AI DJ X | Commented out in favor of adding it to the config
+//          || Program.ConfigurationInstance.Base.OscThings.CustomBlockWords.Any(word => newPlaying.Title.ContainsOrEqualsOrdinalIgnoreCase(word))
+            || Program.ConfigurationInstance!.Base!.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Title.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing contains a blocked word
             || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Artist.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing contains a blocked word
             || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Title.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing equals a blocked word
             || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Artist.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing equals a blocked word
@@ -256,7 +258,7 @@ public class OscMedia {
     private static void UpdateCurrentlyPlayingMediaProxy(GlobalSystemMediaTransportControlsSession sender)
         => UpdateCurrentlyPlayingMedia(sender).RunWithoutAwait();
 
-    /// <summary>
+    /*/// <summary>
     /// Enum to classify the different commands that can be executed
     /// </summary>
     private enum MediaCommandType {
@@ -267,9 +269,9 @@ public class OscMedia {
         Skip,
         Info,
         TogglePlayback
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// List of command aliases
     /// </summary>
     private static readonly IReadOnlyDictionary<string, MediaCommandType> _commandTriggers = new Dictionary<string, MediaCommandType>() {
@@ -291,9 +293,9 @@ public class OscMedia {
         { "now", MediaCommandType.Info },
 
         { "toggle", MediaCommandType.TogglePlayback },
-    };
+    };*/
 
-    /// <summary>
+    /*/// <summary>
     /// Handles the lowercase raw media command, skips otherwise
     /// </summary>
     /// <param name="command">Raw command</param>
@@ -306,7 +308,7 @@ public class OscMedia {
         var mediaCommand = _commandTriggers[command];
         HandleMediaCommand(mediaCommand).RunWithoutAwait();
         return true;
-    }
+    }*/
 
     /*/// <summary>
     /// Handles osc media commands
@@ -334,7 +336,7 @@ public class OscMedia {
         return command != MediaCommandType.None;
     }*/
 
-    /// <summary>
+    /*/// <summary>
     /// Actual handling of media commands
     /// </summary>
     /// <param name="command">command type</param>
@@ -365,7 +367,7 @@ public class OscMedia {
 
             case MediaCommandType.Rewind:
                 if (await _session.TrySkipPreviousAsync())
-                    Logger.Information("Rewinded media playback");
+                    Logger.Information("Rewound media playback");
                 return;
 
             case MediaCommandType.Info:
@@ -377,12 +379,12 @@ public class OscMedia {
 
             default: return;
         }
-    }
+    }*/
 
     private static async Task SendOscMessage(string address, params object[] args) {
         var msg = new OscMessage(address, args);
         await _oscSender.SendAsync(msg);
-        await Task.Delay(TimeSpan.FromSeconds(Program.ConfigurationInstance.Base.OscThings.SecondToAutoHideChatBox));
+        await Task.Delay(TimeSpan.FromSeconds(Program.ConfigurationInstance!.Base!.OscThings.SecondsToAutoHideChatBox));
         await _oscSender.SendAsync(new OscMessage(AddressGameTextbox, string.Empty));
     }
 }

@@ -4,7 +4,14 @@ VRStartAssistant/obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
+.vs/
 Build/
+Build Long/
+Build Setup/
 *.snk
-VRStartAssistant/Secret/
 Resources/*.psd
+Resources/*.url
+VRSASetup/Debug/
+VRSASetup/Release/
+
+VRStartAssistantUI/

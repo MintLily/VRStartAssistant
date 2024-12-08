@@ -2,40 +2,33 @@
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
-namespace VRStartAssistant.Configuration; 
+namespace VRStartAssistant.Configuration;
 
 public class Config {
     public Base? Base { get; private set; }
-    private readonly ILogger _logger = Log.ForContext(typeof(Config));
+    private readonly ILogger _logger = Log.ForContext<Config>();
 
     internal void Load() {
         var hasFile = File.Exists("VRStartAssistant.config.json");
-        
+
         var defaultConfig = new Base {
             ConfigVersion = Vars.TargetConfigVersion,
+            VR = new VR {
+                AutoLaunchWithSteamVr = false,
+                HasRegistered = false
+            },
             Audio = new Audio {
                 DefaultAudioDevice = 0,
+                ApplyAllDevicesToList = false,
                 AudioDevices = [],
                 SwitchBackAudioDevice = 1
-            },
-            WinXSO = new WinXSO {
-                Settings = new Settings {
-                    Applications = [
-                        "discord",
-                        "discordptb",
-                        "discordcanary",
-                        "vesktop"
-                    ],
-                    Whitelist = true
-                }
             },
             HASS = new HASS {
                 Host = "http://127.0.0.1:8123/",
                 Token = "",
-                BaseStationEntityIds = [""],
+                ToggleSwitchEntityIds = [""],
                 ControlLights = false,
-                HueLightEntityIds = [""],
-                ExtraHueLightEntityIds = [""],
+                LightEntityIds = [""],
                 LightBrightness = 0.0f,
                 LightColor = [0, 0, 0]
             },
@@ -43,18 +36,25 @@ public class Config {
                 ListeningPort = 9001,
                 SendingPort = 9000,
                 ShowMediaStatus = false,
+                ForceStartMediaStatus = false,
                 CustomBlockWordsContains = [],
-                CustomBlockWordsEquals = [],
-                SecondToAutoHideChatBox = 2
+                CustomBlockWordsEquals = [ "Up next", "DJ X" ],
+                SecondsToAutoHideChatBox = 2
             },
-            RunSecretApp1 = true,
-            RunVrcVideoCacher = false,
-            RunAdGoBye = false,
-            RunHOSCY = false,
-            RunHeartRateOnStream = false,
-            RunOscLeash = false
+            Programs = [
+                new Programs {
+                    Name = "VRCX",
+                    ExePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VRCX", "VRCX.exe"),
+                    Arguments = "",
+                    StartWithVrsa = true,
+                    StartMinimized = true,
+                    HasMultiProcesses = true,
+                    ProcessName = "vrcx",
+                    FallbackProcessStartingNeeded = true
+                }
+            ]
         };
-        
+
         bool update;
         Base? config = null;
         if (hasFile) {
@@ -63,21 +63,23 @@ public class Config {
             if (config?.ConfigVersion == Vars.TargetConfigVersion) {
                 Base = config;
                 update = false;
-            } else {
+            }
+            else {
                 update = true;
                 config!.ConfigVersion = Vars.TargetConfigVersion;
             }
-        } else {
+        }
+        else {
             update = true;
         }
-        
+
         var json = JsonSerializer.Serialize(config ?? defaultConfig, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText("VRStartAssistant.config.json", json);
         _logger.Information("{0} VRStartAssistant.config.json", update ? "Updated" : hasFile ? "Loaded" : "Created");
         Base = config ?? defaultConfig;
     }
-    
-    // public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
-    
+
+    public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
+
     public string ToJson() => JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true });
 }

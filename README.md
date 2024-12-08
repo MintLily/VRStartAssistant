@@ -20,8 +20,7 @@
   <h3 align="center">VRStartAssistant</h3>
 
   <p align="center">
-    An all-in-one app that helps me set up a one-click automated VR setup.<br />
-    <i>This is not meant for others to use out of the box. &mdash; no executables will be provided</i>
+    An all-in-one app that helps set up a one-click automated VR setup.
     <br />
   </p>
 </div>
@@ -38,6 +37,7 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#know-the-configuration">Know the Configuration</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -48,23 +48,119 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-An all-in-one app that helps me set up a one-click automated VR setup. It starts [VRCX](https://github.com/vrcx-team/VRCX), [VRChat OSC Router](https://github.com/SutekhVRC/VOR), [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), [AdGoBye](https://github.com/AdGoBye/AdGoBye), [VRChat](https://hello.vrchat.com/), [VRCVideoCacher](https://git.ellyvr.dev/Elly/VRCVideoCacher), [HOSCY](https://github.com/PaciStardust/HOSCY), [HeartRateOnStream-OSC](https://github.com/Curtis-VL/HeartRateOnStream-OSC), [OSCLeash](https://github.com/ZenithVal/OSCLeash), and (a custom/beta version of) [WindowsXSO][WindowsXSOUrl] in a time-based, sequential order.
+An all-in-one app that helps me set up a one-click automated VR setup. It starts various applications<sup>1</sup>, as well as, [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), and [VRChat](https://hello.vrchat.com/) in a time-based, sequential order.
 <br>
 It also automatically turns on some smart plugs used for Base Stations, and turns them off upon SteamVR exit.
+<br><br>
+<small><sup>1</sup> - Based on what is in configuration file</small>
+
+## Know the Configuration
+
+<details>
+  <summary>General</summary>
+  <ul>
+    <li><code>ConfigVersion</code> - Specifies the amount of times the configuration has been revised. <b>(DO NOT EDIT THIS VALUE)</b></li>
+  </ul>
+</details>
+
+<details>
+  <summary>VR</summary>
+  <ul>
+    <li><code>AutoLaunchWithSteamVr</code> - Allows you to set if you want this application to start automatically when you start SteamVR, instead of manually every time.</li>
+    <li><code>HasRegistered</code> - Specifies whether SteamVR has been registered to auto start <b>(DO NOT EDIT THIS VALUE)</b></li>
+  </ul>
+</details>
+
+<details>
+  <summary>Audio</summary>
+  <ul>
+    <li><code>DefaultAudioDevice</code> - The ID number of the audio device</li>
+    <li><code>ApplyAllDevicesToList</code> - Add all your speaker devices to the list below</li>
+    <li>
+      <code>AudioDevices</code> - The list of audio devices (speakers) you have the program auto switch to when starting the program / SteamVR
+      <ul>
+        <li>
+          <details>
+            <summary>Audio Entry</summary>
+            <ul>
+              <li><code>Id</code> - Number of ID</li>
+              <li><code>Name</code> - Human Readable Name</li>
+              <li><code>Guid</code> - Unique id for windows to assign</li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </li>
+    <li><code>SwitchBackAudioDevice</code> - The device you want to switch back to after SteamVR closes</li>
+  </ul>
+</details>
+
+<details>
+  <summary>Home Assistant</summary>
+  <ul>
+    <li><code>Host</code> - The URL/IP address of your server [ex. <code>http://192.168.1.101/</code>]</li>
+    <li><code>Token</code> - Authentication Token [<a href="https://img.mili.lgbt/7zq2UiOTr7oOJ84cXX2.png" target="_blank">Where to go to create your token</a>]</li>
+    <li><code>ToggleSwitchEntityIds</code> - Your list of simple toggle devices [<a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank">follow this guide to find and/or customize your entities</a>]</li>
+    <li><code>ControlLights</code> - Specify whether or not you want this program to control your lights (true or false value)</li>
+    <li><code>LightEntityIds</code> - Your list of light IDs [<a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank">follow this guide to find and/or customize your entities</a>]</li>
+    <li><code>LightBrightness</code> - Value of brightness of lights [value from 0 to 100]</li>
+    <li><code>LightColor</code> - R, G, B value of the lights</li>
+  </ul>
+</details>
+
+<details>
+  <summary>OSC</summary>
+  <ul>
+    <li><code>ListeningPort</code> - The OSC Listening port</li>
+    <li><code>SendingPort</code> - The OSC Sending port</li>
+    <li><code>ShowMediaStatus</code> - In VRChat, display a message above your head when a song changes (true or false value)</li>
+    <li><code>ForceStartMediaStatus</code> - Forcably run the media service in case VRChat is not detected (true or false value)</li>
+    <li><code>CustomBlockWordsContains</code> - List of word(s) used to no show the message [ex. if you add the word "star", any song name or artist with that word will not display a message]</li>
+    <li><code>CustomBlockWordsEquals</code> - List of word(s) used to no show the message [ex. if you add the word(s) "Tokyo Machine", and song or artist matching that will not display a message]</li>
+    <li><code>SecondsToAutoHideChatBox</code> - Number of seconds the message will show for</li>
+  </ul>
+</details>
+
+<details>
+  <summary>Programs</summary>
+  <ul>
+    <li><code>Programs</code> - The list of programs you want to auto start with this program
+      <ul>
+        <li>
+          <details>
+            <summary>Program Entry</summary>
+            <ul>
+              <li><code>Name</code> - The name so you know what it is</li>
+              <li><code>ExePath</code> - File path to the program excecutable</li>
+              <li><code>Arugments</code> - Any arguments you may need for that program</li>
+              <li><code>StartWithVrsa</code> - Specify if you want the your program to start with VRSA</li>
+              <li><code>StartMinimized</code> - Start your program with it's window minimized</li>
+              <li><code>HasMultiProcesses</code> - Specify with the program has multiple processes [ex. VRCX has multiple processes]</li>
+              <li><code>ProcessName</code> - The name of the process [<a href="https://img.mili.lgbt/vTTATZ8TR2HV8o7O5e.png" target="_blank">find out how to get this name here (me selecting VRCX)</a>]</li>
+              <li><code>FallbackProcessStartingNeeded</code> - Set this to true if the program does not launch your program correctly</li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</details>
 
 ### Built With
 
-[![Rider][Rider]][RiderUrl] [![DotNet][CSharp]][DotNetUrl] [![Sublime Text][Sublime]][SublimeUrl]<br>
+[![Rider][Rider]][RiderUrl] [![VisualStudio][VisualStudio]][VisualStudioUrl] [![DotNet][CSharp]][DotNetUrl] [![Sublime Text][Sublime]][SublimeUrl]<br>
 [![AudioSwitcher][AudioSwitcher]][AudioSwitcherUrl]<br>
 [![RestSharp][RestSharp]][RestSharpUrl]<br>
 [![Serilog][Serilog]][SerilogUrl] &nbsp;&nbsp;&nbsp; ![Serilog.Expressions] ![Serilog.Sinks.Console] ![Serilog.Sinks.File]<br>
 [![XSNotifications][XSNotifications]][XSNotificationsUrl]<br>
-[![CoreOSC][CoreOSC]][CoreOSCUrl]
+[![CoreOSC][CoreOSC]][CoreOSCUrl]<br>
+[![System.CommandLine][System.CommandLine]][System.CommandLineUrl] &nbsp;&nbsp;&nbsp; ![System.CommandLine.NamingConventionBinder]
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`][license-url] for more information.
+Distributed under the MIT License. See [`LICENSE`][license-url] for more information.<br>
+Specific GPL-2.0 applies to [Paci](https://github.com/PaciStardust/HOSCY)'s code [in this file](https://github.com/MintLily/VRStartAssistant/blob/main/VRStartAssistant/Features/OscMedia.cs) (`OscMedia.cs`)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -96,10 +192,12 @@ Distributed under the MIT License. See [`LICENSE`][license-url] for more informa
 
 [Rider]: https://img.shields.io/badge/Rider-000000?style=for-the-badge&logo=rider&logoColor=white
 [RiderUrl]: https://jb.gg/OpenSourceSupport
-[CSharp]: https://img.shields.io/badge/DotNet%208-512BD4?style=for-the-badge&logo=csharp&logoColor=white
-[DotNetUrl]: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+[CSharp]: https://img.shields.io/badge/DotNet%209-512BD4?style=for-the-badge&logo=sharp&logoColor=white
+[DotNetUrl]: https://dotnet.microsoft.com/en-us/download/dotnet/9.0
 [Sublime]: https://img.shields.io/badge/Sublime%20Text-FF9800?style=for-the-badge&logo=sublimetext&logoColor=white
 [SublimeUrl]: https://www.sublimetext.com/
+[VisualStudio]: https://img.shields.io/badge/Visual%20Studio-463668?style=for-the-badge&logo=vs&logoColor=white
+[VisualStudioURL]: https://visualstudio.microsoft.com/
 
 <!-- NuGet Packages -->
 [AudioSwitcher]: https://img.shields.io/badge/AudioSwitcher-004880?style=for-the-badge&logo=nuget&logoColor=white
@@ -115,6 +213,9 @@ Distributed under the MIT License. See [`LICENSE`][license-url] for more informa
 [XSNotificationsUrl]: https://www.nuget.org/packages/XSNotifications
 [CoreOSC]: https://img.shields.io/badge/LucHeart.CoreOSC-004880?style=for-the-badge&logo=nuget&logoColor=white
 [CoreOSCUrl]: https://www.nuget.org/packages/LucHeart.CoreOSC
+[System.CommandLine]: https://img.shields.io/badge/System.CommandLine-004880?style=for-the-badge&logo=nuget&logoColor=white
+[System.CommandLineUrl]: https://www.nuget.org/packages/System.CommandLine
+[System.CommandLine.NamingConventionBinder]: https://img.shields.io/badge/System.CommandLine.NamingConventionBinder-005a80?style=for-the-badge&logo=nuget&logoColor=white
 
 <!-- Other Links -->
 [XSOverlaySteam]: https://store.steampowered.com/app/1173510/XSOverlay/
