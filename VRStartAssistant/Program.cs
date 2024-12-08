@@ -10,6 +10,7 @@ using VRStartAssistant.Features.Integrations;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using VRStartAssistant.Features.Apps;
+using VRStartAssistant.Updater;
 
 namespace VRStartAssistant;
 
@@ -60,6 +61,7 @@ public abstract class Program {
             .CreateLogger();
 
         ChangeConsoleTitle();
+        await new Updater.Updater().Start();
         
         Log.Information("Base Directory: {0}", AppDomain.CurrentDomain.BaseDirectory);
         ConfigurationInstance = new Config();
