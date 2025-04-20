@@ -13,6 +13,7 @@ public class Config {
 
         var defaultConfig = new Base {
             ConfigVersion = Vars.TargetConfigVersion,
+            ConsoleOutputMaxLines = 9,
             VR = new VR {
                 AutoLaunchWithSteamVr = false,
                 HasRegistered = false

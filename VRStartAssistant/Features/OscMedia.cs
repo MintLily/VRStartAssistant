@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using Windows.Media;
 using Windows.Media.Control;
@@ -11,13 +11,15 @@ namespace VRStartAssistant.Features;
 // as well as https://github.com/EllyVR's private project
 
 public class OscMedia {
-    private static readonly ILogger Logger = Log.ForContext<OscMedia>();
+    // private static readonly ILogger Logger = Log.ForContext<OscMedia>();
     private static GlobalSystemMediaTransportControlsSessionManager? _sessionManager;
     private static GlobalSystemMediaTransportControlsSession? _session;
     private static GlobalSystemMediaTransportControlsSessionMediaProperties? _nowPlaying;
     private static DateTime _mediaLastChanged = DateTime.MinValue;
     private static OscDuplex? _oscSender;
     private static string AddressGameTextbox { get; set; } = "/chatbox/input";
+
+    public static bool HasMediaDetectionRunning { get; set; }
 
     private enum NotificationType {
         None,
@@ -73,7 +75,8 @@ public class OscMedia {
         _session = sender.GetCurrentSession();
         _nowPlaying = null;
 
-        Logger.Information($"Media session has been changed to {_session?.SourceAppUserModelId ?? "None"}");
+        // Logger.Information($"Media session has been changed to {_session?.SourceAppUserModelId ?? "None"}");
+        MainWindow.Instance.UpdateConsoleOutput($"[[[gold1]OSC Media[/]]] Media session has been changed to {_session?.SourceAppUserModelId ?? "None"}");
 
         if (_session == null)
             return;
@@ -131,7 +134,8 @@ public class OscMedia {
             //     return;
             // }
 
-            Logger.Information($"Currently playing media has changed to: {playing}");
+            // Logger.Information($"Currently playing media has changed to: {playing}");
+            MainWindow.Instance.UpdateConsoleOutput($"[[[gold1]OSC Media[/]]] Currently playing media has changed to: {playing.Replace("🎵 ", "")}");
             SetNotification($"{MediaPlayingVerb} {playing}");
         }
     }
@@ -199,7 +203,7 @@ public class OscMedia {
         _notification = input;
         // PageInfo.SetNotification(input, type);
         Program.ChangeConsoleTitle(input);
-        Logger.Information("Setting notification to: " + input);
+        MainWindow.Instance.UpdateConsoleOutput("[[[gold1]OSC Media[/]]] Setting notification to: " + input);
         Task.Run(async () => await SendOscMessage(AddressGameTextbox, [input, true, false]));
     }
 
