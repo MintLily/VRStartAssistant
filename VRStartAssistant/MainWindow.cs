@@ -202,6 +202,10 @@ public class MainWindow {
             Program.ConfigurationInstance.Load();
             UpdateConsoleOutput("[[[gold1]Configuration[/]]] Reloaded Configuration");
         }, ctrl: true);
+        
+        RegisterKeyCombination(ConsoleKey.F1, () => {
+            new Updater.Updater().OpenWebsite();
+        });
 
 #endregion
 
