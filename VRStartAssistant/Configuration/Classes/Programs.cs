@@ -9,6 +9,7 @@ public class Programs {
     [JsonPropertyName("Start With VRSA")] public bool StartWithVrsa { get; init; }
     [JsonPropertyName("Start Minimized")] public bool StartMinimized { get; init; }
     [JsonPropertyName("Has Multiple Processes")] public bool HasMultiProcesses { get; init; }
+    [JsonPropertyName("Relaunch If Crashed")] public bool RelaunchIfCrashed { get; init; }
     [JsonPropertyName("Process Name")] public string? ProcessName { get; init; }
     [JsonPropertyName("Fallback Process Starting Needed")] public bool FallbackProcessStartingNeeded { get; init; }
 }

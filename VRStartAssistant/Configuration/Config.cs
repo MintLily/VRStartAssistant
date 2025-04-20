@@ -49,6 +49,7 @@ public class Config {
                     StartWithVrsa = true,
                     StartMinimized = true,
                     HasMultiProcesses = true,
+                    RelaunchIfCrashed = false,
                     ProcessName = "vrcx",
                     FallbackProcessStartingNeeded = true
                 }
