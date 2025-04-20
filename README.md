@@ -13,7 +13,7 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/Minty-Labs/WindowsXSO">
+  <a href="https://github.com/MintLily/VRStartAssistant">
     <img src="Resources/banner.webp" alt="Banner Logo" height="200">
   </a>
 
@@ -43,16 +43,22 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 An all-in-one app that helps me set up a one-click automated VR setup. It starts various applications<sup>1</sup>, as well as, [SteamVR](https://store.steampowered.com/app/250820/SteamVR/), and [VRChat](https://hello.vrchat.com/) in a time-based, sequential order.
-<br>
-It also automatically turns on some smart plugs used for Base Stations, and turns them off upon SteamVR exit.
 <br><br>
 <small><sup>1</sup> - Based on what is in configuration file</small>
+
+### Built With
+
+[![Rider][Rider]][RiderUrl] [![VisualStudio][VisualStudio]][VisualStudioUrl] [![DotNet][CSharp]][DotNetUrl] [![Sublime Text][Sublime]][SublimeUrl]<br>
+[![AudioSwitcher][AudioSwitcher]][AudioSwitcherUrl]<br>
+[![RestSharp][RestSharp]][RestSharpUrl]<br>
+[![Serilog][Serilog]][SerilogUrl] &nbsp;&nbsp;&nbsp; ![Serilog.Expressions] ![Serilog.Sinks.Console] ![Serilog.Sinks.File]<br>
+[![XSNotifications][XSNotifications]][XSNotificationsUrl]<br>
+[![CoreOSC][CoreOSC]][CoreOSCUrl]<br>
+[![Spectre.Console][Spectre.Console]][Spectre.ConsoleUrl] &nbsp;&nbsp;&nbsp; ![Spectre.Console.Cli]
 
 ## Know the Configuration
 
@@ -109,7 +115,7 @@ It also automatically turns on some smart plugs used for Base Stations, and turn
 </details>
 
 <details>
-  <summary>OSC</summary>
+  <summary>VRChat Music OSC (Chatbox)</summary>
   <ul>
     <li><code>ListeningPort</code> - The OSC Listening port</li>
     <li><code>SendingPort</code> - The OSC Sending port</li>
@@ -136,6 +142,7 @@ It also automatically turns on some smart plugs used for Base Stations, and turn
               <li><code>StartWithVrsa</code> - Specify if you want the your program to start with VRSA</li>
               <li><code>StartMinimized</code> - Start your program with it's window minimized</li>
               <li><code>HasMultiProcesses</code> - Specify with the program has multiple processes [ex. VRCX has multiple processes]</li>
+              <li><code>RelaunchIfCrashed</code> - If true, VRSA will try to relaunch your program if it becomes closed</li>
               <li><code>ProcessName</code> - The name of the process [<a href="https://img.mili.lgbt/vTTATZ8TR2HV8o7O5e.png" target="_blank">find out how to get this name here (me selecting VRCX)</a>]</li>
               <li><code>FallbackProcessStartingNeeded</code> - Set this to true if the program does not launch your program correctly</li>
             </ul>
@@ -146,21 +153,12 @@ It also automatically turns on some smart plugs used for Base Stations, and turn
   </ul>
 </details>
 
-### Built With
-
-[![Rider][Rider]][RiderUrl] [![VisualStudio][VisualStudio]][VisualStudioUrl] [![DotNet][CSharp]][DotNetUrl] [![Sublime Text][Sublime]][SublimeUrl]<br>
-[![AudioSwitcher][AudioSwitcher]][AudioSwitcherUrl]<br>
-[![RestSharp][RestSharp]][RestSharpUrl]<br>
-[![Serilog][Serilog]][SerilogUrl] &nbsp;&nbsp;&nbsp; ![Serilog.Expressions] ![Serilog.Sinks.Console] ![Serilog.Sinks.File]<br>
-[![XSNotifications][XSNotifications]][XSNotificationsUrl]<br>
-[![CoreOSC][CoreOSC]][CoreOSCUrl]<br>
-[![System.CommandLine][System.CommandLine]][System.CommandLineUrl] &nbsp;&nbsp;&nbsp; ![System.CommandLine.NamingConventionBinder]
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See [`LICENSE`][license-url] for more information.<br>
-Specific GPL-2.0 applies to [Paci](https://github.com/PaciStardust/HOSCY)'s code [in this file](https://github.com/MintLily/VRStartAssistant/blob/main/VRStartAssistant/Features/OscMedia.cs) (`OscMedia.cs`)
+Specific GPL-2.0 applies to [Paci](https://github.com/PaciStardust/HOSCY)'s code [in this file](https://github.com/MintLily/VRStartAssistant/blob/main/VRStartAssistant/Features/OscMedia.cs) (`OscMedia.cs`)<br>
+Specific BSD applies to [tallesl](https://github.com/tallesl)'s code [in this folder](https://github.com/MintLily/VRStartAssistant/blob/main/VRStartAssistant/FluentScheduler) (`FluentScheduler/`)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -169,9 +167,11 @@ Specific GPL-2.0 applies to [Paci](https://github.com/PaciStardust/HOSCY)'s code
 * Katie - For help with the Windows API (From [WindowsXSO][WindowsXSOUrl])
 * [xenolightning](https://github.com/xenolightning) - For Audio Switching (from [AudioSwitcher](https://github.com/xenolightning/AudioSwitcher))
 * [Home Assistant](https://www.home-assistant.io/) & HA Community - For their [RestAPI](https://developers.home-assistant.io/docs/api/rest/) docs
-* * [Elly](https://github.com/Ellyvr) ([GitLab](https://git.ellyvr.dev/Elly)) - For sanity checking my first time use of websocket/api things in C# using [RestSharp](https://restsharp.dev/)
+* * [Elly](https://ellyvr.dev/) - For sanity checking my first time use of websocket/api things in C# using [RestSharp](https://restsharp.dev/)
 * [Paci](https://github.com/PaciStardust) - For parts of [HOSCY](https://github.com/PaciStardust/HOSCY)'s code for OSC Chatbox things
 * [LucHeart](https://github.com/LucHeart) - For OSC help
+* [tallesl](https://github.com/tallesl) - for their automated job scheduler, [FluentScheduler](https://github.com/fluentscheduler/FluentScheduler)
+* * [SamuelDeCarvalho](https://github.com/SamuelDeCarvalho), [ExtraTNT](https://github.com/ExtraTNT), [rafis-tatar](https://github.com/rafis-tatar) - Forks with edits
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -213,9 +213,9 @@ Specific GPL-2.0 applies to [Paci](https://github.com/PaciStardust/HOSCY)'s code
 [XSNotificationsUrl]: https://www.nuget.org/packages/XSNotifications
 [CoreOSC]: https://img.shields.io/badge/LucHeart.CoreOSC-004880?style=for-the-badge&logo=nuget&logoColor=white
 [CoreOSCUrl]: https://www.nuget.org/packages/LucHeart.CoreOSC
-[System.CommandLine]: https://img.shields.io/badge/System.CommandLine-004880?style=for-the-badge&logo=nuget&logoColor=white
-[System.CommandLineUrl]: https://www.nuget.org/packages/System.CommandLine
-[System.CommandLine.NamingConventionBinder]: https://img.shields.io/badge/System.CommandLine.NamingConventionBinder-005a80?style=for-the-badge&logo=nuget&logoColor=white
+[Spectre.Console]: https://img.shields.io/badge/Spectre.Console-004880?style=for-the-badge&logo=nuget&logoColor=white
+[Spectre.ConsoleUrl]: https://www.nuget.org/packages/Spectre.Console
+[Spectre.Console.Cli]: https://img.shields.io/badge/Spectre.Console.Cli-005a80?style=for-the-badge&logo=nuget&logoColor=white
 
 <!-- Other Links -->
 [XSOverlaySteam]: https://store.steampowered.com/app/1173510/XSOverlay/

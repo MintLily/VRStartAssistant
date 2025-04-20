@@ -8,6 +8,7 @@ riderModule.iml
 Build/
 Build Long/
 Build Setup/
+Build - Copy/
 *.snk
 Resources/*.psd
 Resources/*.url
