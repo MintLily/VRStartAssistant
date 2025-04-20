@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Text;
 using Windows.Media;
 using Windows.Media.Control;
@@ -8,7 +8,7 @@ using VRStartAssistant.Utils;
 
 namespace VRStartAssistant.Features;
 // A lot of this came from https://github.com/PaciStardust/HOSCY :: Paci's Code Should follow their GPL-2.0 License
-// as well as my girlfriend's private project
+// as well as https://github.com/EllyVR's private project
 
 public class OscMedia {
     private static readonly ILogger Logger = Log.ForContext<OscMedia>();
@@ -28,27 +28,45 @@ public class OscMedia {
     }
 
     internal static void StartMediaDetection() {
-        var o = Program.ConfigurationInstance!.Base!.OscThings;
+        var oscConf = Program.ConfigurationInstance!.Base!.OscMusic;
         _oscSender = new OscDuplex(
-            new IPEndPoint(IPAddress.Loopback, o.ListeningPort),
-            new IPEndPoint(IPAddress.Loopback, o.SendingPort)
+            new IPEndPoint(IPAddress.Loopback, oscConf.ListeningPort),
+            new IPEndPoint(IPAddress.Loopback, oscConf.SendingPort)
             );
-        Logger.Information("OSC Sender Started");
+        // Logger.Information("OSC Sender Started");
+        // MainWindow.Instance.UpdateStartupOutput("OSC Sender Started");
+        HasMediaDetectionRunning = true;
         StartMediaDetectionInternal().RunWithoutAwait();
     }
     
     internal static void StopMediaDetection() {
+        HasMediaDetectionRunning = false;
         _oscSender?.Dispose();
-        Logger.Information("Stopped media detection service");
+        // Logger.Information("Stopped media detection service");
+        MainWindow.Instance.UpdateConsoleOutput("Stopped media detection service");
     }
 
     private static async Task StartMediaDetectionInternal() {
-        Logger.Information("Started media detection service");
+        // Logger.Information("Started media detection service");
+        MainWindow.Instance.UpdateConsoleOutput("Started media detection service");
 
         _sessionManager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
         _sessionManager.CurrentSessionChanged += SessionManagerCurrentSessionChanged;
 
         GetCurrentSession(_sessionManager);
+    }
+    
+    public static void ToggleMediaDetection() {
+        if (HasMediaDetectionRunning)
+            StopMediaDetection();
+        else
+            StartMediaDetection();
+    }
+    
+    public static async Task RestartMediaDetection() {
+        StopMediaDetection();
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        StartMediaDetection();
     }
 
     private static void GetCurrentSession(GlobalSystemMediaTransportControlsSessionManager sender) {
@@ -79,10 +97,10 @@ public class OscMedia {
             || string.IsNullOrWhiteSpace(newPlaying.Title) // No title
 //          || newPlaying is { Title: "Up next", Artist: "DJ X" } // Is playing from AI DJ X | Commented out in favor of adding it to the config
 //          || Program.ConfigurationInstance.Base.OscThings.CustomBlockWords.Any(word => newPlaying.Title.ContainsOrEqualsOrdinalIgnoreCase(word))
-            || Program.ConfigurationInstance!.Base!.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Title.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing contains a blocked word
-            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsContains.Any(word => newPlaying.Artist.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing contains a blocked word
-            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Title.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing equals a blocked word
-            || Program.ConfigurationInstance.Base.OscThings.CustomBlockWordsEquals.Any(word => newPlaying.Artist.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing equals a blocked word
+            || Program.ConfigurationInstance!.Base!.OscMusic.CustomBlockWordsContains.Any(word => newPlaying.Title.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing contains a blocked word
+            || Program.ConfigurationInstance.Base.OscMusic.CustomBlockWordsContains.Any(word => newPlaying.Artist.Contains(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing contains a blocked word
+            || Program.ConfigurationInstance.Base.OscMusic.CustomBlockWordsEquals.Any(word => newPlaying.Title.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Title playing equals a blocked word
+            || Program.ConfigurationInstance.Base.OscMusic.CustomBlockWordsEquals.Any(word => newPlaying.Artist.Equals(word, StringComparison.OrdinalIgnoreCase)) // Is Artist playing equals a blocked word
         ) {
             SetNotification(string.Empty);
             return;
@@ -99,7 +117,7 @@ public class OscMedia {
         _nowPlaying = newPlaying;
         _mediaLastChanged = DateTime.Now;
 
-        if (Program.ConfigurationInstance.Base.OscThings.ShowMediaStatus) {
+        if (Program.ConfigurationInstance.Base.OscMusic.ShowMediaStatus) {
             var playing = CreateCurrentMediaString();
 
             if (string.IsNullOrWhiteSpace(playing)) {
@@ -384,7 +402,7 @@ public class OscMedia {
     private static async Task SendOscMessage(string address, params object[] args) {
         var msg = new OscMessage(address, args);
         await _oscSender.SendAsync(msg);
-        await Task.Delay(TimeSpan.FromSeconds(Program.ConfigurationInstance!.Base!.OscThings.SecondsToAutoHideChatBox));
+        await Task.Delay(TimeSpan.FromSeconds(Program.ConfigurationInstance!.Base!.OscMusic.SecondsToAutoHideChatBox));
         await _oscSender.SendAsync(new OscMessage(AddressGameTextbox, string.Empty));
     }
 }

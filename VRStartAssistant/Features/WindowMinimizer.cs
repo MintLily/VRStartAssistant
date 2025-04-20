@@ -1,12 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using Serilog;
+using Serilog.Events;
+using VRStartAssistant.Utils;
 
 namespace VRStartAssistant.Features; 
 
 public class WindowMinimizer {
-    public WindowMinimizer() => Logger.Information("Setting up module :: {Description}", "Functions to minimize windows");
-    
-    private static readonly ILogger Logger = Log.ForContext<WindowMinimizer>();
+    // public WindowMinimizer() => Logger.Information("Setting up module :: {Description}", "Functions to minimize windows");
+    // private static readonly ILogger Logger = Log.ForContext<WindowMinimizer>();
     
     // [DllImport("user32.dll", EntryPoint = "FindWindow")]
     // private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
@@ -22,38 +23,32 @@ public class WindowMinimizer {
         ShowWindow(GetConsoleWindow(), 0); // Hide this console window
 
         if (Processes.VrChatProcess is not null) {
-            Logger.Information("Minimizing VRChat...");
             ShowWindow(Processes.VrChatProcess.MainWindowHandle, 6);
         }
 
-        if (Program.ConfigurationInstance!.Base!.OscThings.ForceStartMediaStatus
-            || (Processes.VrChatProcess is not null && !Program.ConfigurationInstance.Base.OscThings.ForceStartMediaStatus)) {
+        if (Program.ConfigurationInstance!.Base!.OscMusic.ForceStartMediaStatus
+            || (Processes.VrChatProcess is not null && !Program.ConfigurationInstance.Base.OscMusic.ForceStartMediaStatus)) {
             OscMedia.StartMediaDetection();
         }
 
-        try {
+        Try.Catch(() => {
             foreach (var obj in Processes.SingleApplications) {
-                if (obj.Value is null) continue;
-                Logger.Information("Minimizing {Name}...", obj.Key);
+                if (obj.Value is null)
+                    continue;
+
                 ShowWindow(obj.Value.MainWindowHandle, 6);
             }
-        }
-        catch (Exception e) {
-            Logger.Error(e, "Failed to minimize single processes");
-        }
+        }, true);
 
-        try {
+        Try.Catch(() => {
             foreach (var obj in Processes.MultiApplications) {
-                if (obj.Value is null) continue;
-                foreach (var process in obj.Value) {
-                    Logger.Information("Minimizing {Name}...", process.ProcessName);
+                if (obj.Value is null)
+                    continue;
+                
+                foreach (var process in obj.Value)
                     ShowWindow(process.MainWindowHandle, 6);
-                }
             }
-        }
-        catch (Exception e) {
-            Logger.Error(e, "Failed to minimize multiple processes");
-        }
+        }, true);
         
         await Task.CompletedTask;
     }

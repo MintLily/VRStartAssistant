@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -32,7 +32,7 @@ public class Config {
                 LightBrightness = 0.0f,
                 LightColor = [0, 0, 0]
             },
-            OscThings = new OscThings {
+            OscMusic = new OscMusic {
                 ListeningPort = 9001,
                 SendingPort = 9000,
                 ShowMediaStatus = false,
