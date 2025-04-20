@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Serilog;
 using VRStartAssistant.Configuration.Classes;
 
@@ -57,31 +57,26 @@ public class Config {
             ]
         };
 
-        bool update;
         Base? config = null;
         if (hasFile) {
             var oldJson = File.ReadAllText("VRStartAssistant.config.json");
             config = JsonSerializer.Deserialize<Base>(oldJson);
-            if (config?.ConfigVersion == Vars.TargetConfigVersion) {
+            
+            if (config?.ConfigVersion == Vars.TargetConfigVersion) 
                 Base = config;
-                update = false;
-            }
-            else {
-                update = true;
+            else
                 config!.ConfigVersion = Vars.TargetConfigVersion;
-            }
-        }
-        else {
-            update = true;
         }
 
         var json = JsonSerializer.Serialize(config ?? defaultConfig, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText("VRStartAssistant.config.json", json);
-        _logger.Information("{0} VRStartAssistant.config.json", update ? "Updated" : hasFile ? "Loaded" : "Created");
+        // _logger.Information("{0} VRStartAssistant.config.json", update ? "Updated" : hasFile ? "Loaded" : "Created");
         Base = config ?? defaultConfig;
     }
 
     public void Save() => File.WriteAllText("VRStartAssistant.config.json", JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true }));
 
     public string ToJson() => JsonSerializer.Serialize(Base, new JsonSerializerOptions { WriteIndented = true });
+
+    public void MidLoadConfigChanges() => Base = JsonSerializer.Deserialize<Base>(File.ReadAllText("VRStartAssistant.config.json"));
 }
